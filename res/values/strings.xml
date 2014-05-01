@@ -4,5 +4,11 @@
     <string name="app_name">ScreenShot</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="settings_function">功能设置</string>
+    <string name="settings_help">帮助说明</string>
+    <string name="settings_feedback">问题反馈</string>
+    <string name="settings_qrcode">二维码名片</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_exit">退出</string>
 
 </resources>
