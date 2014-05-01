@@ -16,5 +16,30 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="MMListView">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0.0dip</item>
+    </style>
+    
+    <style name="Widget.TabPageIndicator" parent="@style/Widget">
+        <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+        <item name="android:textSize">13.0sp</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/tab_indicator_holo</item>
+        <item name="android:paddingLeft">22.0dip</item>
+        <item name="android:paddingTop">12.0dip</item>
+        <item name="android:paddingRight">22.0dip</item>
+        <item name="android:paddingBottom">12.0dip</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    
+    <style name="Theme.SherlockPageIndicator" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+        <item name="android:listViewStyle">@style/MMListView</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="actionOverflowButtonStyle">@style/Widget.Sherlock.ActionButton.Overflow</item>
+    </style>
 
 </resources>

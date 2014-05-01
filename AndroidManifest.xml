@@ -11,11 +11,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+        android:label="@string/app_name" >
         <activity
             android:name="com.tw.screenshot.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/Theme.SherlockPageIndicator" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
