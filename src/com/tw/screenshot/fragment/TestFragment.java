@@ -1,4 +1,4 @@
-package com.tw.screenshot;
+package com.tw.screenshot.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

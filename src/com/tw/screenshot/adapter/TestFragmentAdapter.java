@@ -1,6 +1,6 @@
 package com.tw.screenshot.adapter;
 
-import com.tw.screenshot.TestFragment;
+import com.tw.screenshot.fragment.TestFragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
