@@ -22,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.tw.screenshot.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/Theme.SherlockPageIndicator" >
+        </activity>
     </application>
 
 </manifest>
