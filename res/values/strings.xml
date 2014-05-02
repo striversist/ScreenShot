@@ -10,5 +10,6 @@
     <string name="settings_qrcode">二维码名片</string>
     <string name="settings_about">关于</string>
     <string name="settings_exit">退出</string>
+    <string name="mode_shake">摇动截屏</string>
 
 </resources>

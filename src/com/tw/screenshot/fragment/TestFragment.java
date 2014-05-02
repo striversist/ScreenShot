@@ -1,7 +1,8 @@
 package com.tw.screenshot.fragment;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-public final class TestFragment extends Fragment {
+public final class TestFragment extends SherlockFragment {
     private static final String KEY_CONTENT = "TestFragment:Content";
 
     public static TestFragment newInstance(String content) {

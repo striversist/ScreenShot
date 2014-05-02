@@ -41,5 +41,12 @@
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
         <item name="actionOverflowButtonStyle">@style/Widget.Sherlock.ActionButton.Overflow</item>
     </style>
+    
+    <style name="style_checkbox">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:paddingLeft">30.0sp</item>
+        <item name="android:button">@drawable/checkbox_select</item>
+    </style>
 
 </resources>
