@@ -114,13 +114,14 @@ public class MainActivity extends SherlockFragmentActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        finish();
+                        stopNotification();
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 doOnDestroy();
                             }
                         }, 1000);
+                        finish();
                     }
                 })
                 .setNegativeButton("取消", new OnClickListener() {
@@ -150,12 +151,15 @@ public class MainActivity extends SherlockFragmentActivity {
                     PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-        
         mShowNotification = true;
+    }
+    
+    private void stopNotification() {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(NOTIFICATION_ID);
+        mShowNotification = false;
     }
     
     public void doOnDestroy() {
