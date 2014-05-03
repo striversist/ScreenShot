@@ -9,6 +9,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.adapter.MainFragmentAdapter;
 import com.tw.screenshot.fragment.HomeFragment;
+import com.tw.screenshot.fragment.HomeFragment.OnStartListener;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -24,7 +25,16 @@ public class MainActivity extends SherlockFragmentActivity {
         setContentView(R.layout.activity_main);
 
         mPagerAdapter = new MainFragmentAdapter(getSupportFragmentManager());
-        mPagerAdapter.addFragment(new HomeFragment(), "首页");
+        
+        HomeFragment homeFragment = new HomeFragment();
+        homeFragment.setOnStartListener(new OnStartListener() {
+            @Override
+            public void onStart() {
+                finish();
+            }
+        });
+        
+        mPagerAdapter.addFragment(homeFragment, "首页");
         mPagerAdapter.addFragment(new HomeFragment(), "截图");
         mPagerAdapter.addFragment(new HomeFragment(), "推荐");
         

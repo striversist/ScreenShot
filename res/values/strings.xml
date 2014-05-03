@@ -10,8 +10,10 @@
     <string name="settings_qrcode">二维码名片</string>
     <string name="settings_about">关于</string>
     <string name="settings_exit">退出</string>
-    <string name="mode_shake">摇动截屏</string>
+    <string name="mode_shake">摇一摇截屏</string>
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="click_me_start">点击我启动</string>
+    <string name="start">启动</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>

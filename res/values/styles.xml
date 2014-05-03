@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -46,7 +46,9 @@
         <item name="android:textSize">15.0sp</item>
         <item name="android:textColor">@color/dark_blue</item>
         <item name="android:paddingLeft">30.0sp</item>
-        <item name="android:button">@drawable/checkbox_select</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableRight">@drawable/checkbox_select</item>
+        <item name="android:drawablePadding">6sp</item>
     </style>
-
+    
 </resources>
