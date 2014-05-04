@@ -56,8 +56,11 @@ public class CommandUtil {
 		if (context == null)
 			return false;
 		
-		if (!checkInitialized())
-			return false;
+		if (!checkInitialized()) {
+		    if (!waitForInitialized(2000)) {
+		        return false;
+		    }
+		}
 		
 		try {
 			int result = sRootRequest.sendRequest(RootService.RequestType.QueryRootAccess.ordinal(), null, null);
@@ -84,23 +87,45 @@ public class CommandUtil {
 			if (Looper.myLooper() == Looper.getMainLooper()) {	// 主线程不能卡住
 				return false;
 			} else {
-				int retryTimes = 0;
-			    while (retryTimes++ < 4) {	// 尝试等待初始化完成
-			        Log.i(TAG, "[tryGetRootAccesss] retryTimes=" + retryTimes);
-			        if (sContext != null && sRootRequest != null)	// 初始化完成
-			        	break;
-				    try {
-				        Thread.sleep(500L);
-				    } catch (InterruptedException e) {
-				    	e.printStackTrace();
-				    }
-			    }
-			    if (sContext == null || sRootRequest == null)	// 依然没初始化完成
-			    	return false;
+				if (!waitForInitialized(2000)) {
+				    return false;
+				}
 			}
 		}
 		
 		return isRootAccessGivenInternal(context.getApplicationContext());
+	}
+	
+	/**
+	 * 等待初始化完成
+	 * @param timeout
+	 */
+	private static boolean waitForInitialized(int timeout) {
+	    if (timeout < 0)
+	        return false;
+	    
+	    final int SLEEP_TIME = 500;    // ms
+	    int maxTimes = timeout / SLEEP_TIME;
+	    if (maxTimes == 0) {
+	        maxTimes = 1;
+	    }
+	    int retryTimes = 0;
+        while (retryTimes++ < maxTimes) {  // 尝试等待初始化完成
+            Log.i(TAG, "[waitForInitialized] retryTimes=" + retryTimes);
+            if (sContext != null && sRootRequest != null)   // 初始化完成
+                break;
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        if (sContext != null && sRootRequest != null) {  // 初始化完成
+            return true;
+        } else {
+            return false;
+        }
 	}
 	
 	/**
