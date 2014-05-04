@@ -26,6 +26,12 @@ public class FileUtil {
         return false;
     }
     
+    /**
+     * 将指定的输入流作为一个文件，保存至指定路径
+     * @param iss
+     * @param outPath
+     * @return
+     */
     public static boolean transferInputStreamToFile(InputStream iss, String outPath) {
         if (iss == null || outPath == null)
             return false;

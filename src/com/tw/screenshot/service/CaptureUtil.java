@@ -13,6 +13,12 @@ import com.tw.screenshot.utils.FileUtil;
 
 public class CaptureUtil {
 
+    /**
+     * 读取FrameBuffer的方式截屏
+     * @param context
+     * @param fileName
+     * @return
+     */
     public static String captureWithFrameBuffer(Context context, String fileName) {
         if (context == null || fileName == null)
             return null;
@@ -39,6 +45,12 @@ public class CaptureUtil {
         return fileName;
     }
 
+    /**
+     * 使用screencap命令截屏（通常在4.x以上手机上有该命令，2.x刷机之后也会有该命令）
+     * @param context
+     * @param fileName
+     * @return
+     */
     public static String captureWithScreenCap(Context context, String fileName) {
         if (context == null || fileName == null)
             return null;
@@ -55,6 +67,12 @@ public class CaptureUtil {
     }
 
     @SuppressWarnings("unused")
+    /**
+     * 等待指定的processName进程结束
+     * @param processName
+     * @param timeout
+     * @return
+     */
     private static boolean waitForProcessFinish(String processName, int timeout) {
         long startTime = System.currentTimeMillis();
         while (true) {
@@ -73,6 +91,13 @@ public class CaptureUtil {
         return RootTools.isProcessRunning(processName);
     }
     
+    /**
+     * 将res/raw目录下的二进制文件copy到files目录下，并加上可执行权限
+     * @param context
+     * @param resId
+     * @param binaryName
+     * @return true(安装成功);false(安装失败)
+     */
     private static boolean installBinary(Context context, int resId, String binaryName) {
         if (context == null || resId < 0 || binaryName == null)
             return false;
