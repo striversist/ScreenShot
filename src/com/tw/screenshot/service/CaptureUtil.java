@@ -11,7 +11,6 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
 import com.stericson.RootTools.execution.CommandCapture;
 import com.tw.screenshot.R;
-import com.tw.screenshot.service.CommandUtil.CommandResultCallback;
 import com.tw.screenshot.utils.FileUtil;
 
 public class CaptureUtil {
@@ -32,18 +31,23 @@ public class CaptureUtil {
                 return null;
             }
         }
-
+        
+        int timeout = 3000;
         try {
-            String command = "chmod 777 /dev/graphics/fb0";
-            CommandUtil.runCommand(context, true, 3000, command);
-            
+            String chmodCmd = "chmod 777 /dev/graphics/fb0";
             String binaryPath = context.getFilesDir() + File.separator + binaryName;
-            command = String.format("%s %s /dev/graphics/fb0 2", binaryPath, fileName);
-            CommandUtil.runCommand(context, true, 3000, command);
+            String captureCmd = String.format("%s %s /dev/graphics/fb0 2", binaryPath, fileName);
+            
+            RootTools.getShell(true).add(new CommandCapture(0, timeout, chmodCmd));
+            RootTools.getShell(true).add(new CommandCapture(0, timeout, captureCmd));
+            waitForProcessFinish(binaryName, timeout);
         } catch (IOException e) {
             e.printStackTrace();
-            fileName = null;
-        } 
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (RootDeniedException e) {
+            e.printStackTrace();
+        }
 
         return fileName;
     }
@@ -126,12 +130,16 @@ public class CaptureUtil {
                 return false;
         }
         
-        String chmodCmd = "chmod 777" + " " + filePath;
-        CommandUtil.runCommand(context, true, new CommandResultCallback() {
-            @Override
-            public void commandOutput(boolean executed, String... lines) {
-            }
-        }, chmodCmd);
+        try {
+            String chmodCmd = "chmod 777" + " " + filePath;
+            RootTools.getShell(true).add(new CommandCapture(0, 1000, chmodCmd));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (RootDeniedException e) {
+            e.printStackTrace();
+        }
         
         return true;
     }
