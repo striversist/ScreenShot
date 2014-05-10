@@ -89,20 +89,21 @@ public class ShakeDetector implements SensorEventListener {
     /**
      * 启动摇晃检测
      */
-    public void start() {
+    public boolean start() {
         if (mSensorManager == null) {
-            throw new UnsupportedOperationException();
+            return false;
         }
         Sensor sensor = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (sensor == null) {
-            throw new UnsupportedOperationException();
+            return false;
         }
         boolean success = mSensorManager.registerListener(this, sensor,
                 SensorManager.SENSOR_DELAY_NORMAL);
         if (!success) {
-            throw new UnsupportedOperationException();
+            return false;
         }
+        return true;
     }
 
     /**

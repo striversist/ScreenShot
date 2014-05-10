@@ -9,6 +9,8 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
 import com.stericson.RootTools.execution.Command;
 import com.stericson.RootTools.execution.Shell;
+import com.tw.screenshot.ShakeDetector;
+import com.tw.screenshot.ShakeDetector.OnShakeListener;
 
 import android.app.Service;
 import android.content.Intent;
@@ -16,12 +18,21 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
-public class RootService extends Service {
+public class RootService extends Service implements OnShakeListener {
 	
 	private static final String TAG = "RootService";
 	private static int sRequestId = 0;
-	public enum RequestType { RunCommand, GetRootAccess, QueryRootAccess }
+	public enum RequestType { RunCommand, GetRootAccess, QueryRootAccess, StartShakeDetect, StopShakeDetect }
+	private ShakeDetector mShakeDetector;
+	
+	@Override
+	public void onCreate() {
+	    super.onCreate();
+	    mShakeDetector = new ShakeDetector(getApplicationContext());
+	    mShakeDetector.registerOnShakeListener(this);
+	}
 
 	private IRootRequest.Stub mBinder = new IRootRequest.Stub() 
     {
@@ -51,6 +62,14 @@ public class RootService extends Service {
 						result = 1;
 					}
 					break;
+				case StartShakeDetect:
+				    if (!mShakeDetector.start()) {
+				        Toast.makeText(getApplicationContext(), "您的手机不支持摇晃截屏", Toast.LENGTH_LONG).show();
+				    }
+				    break;
+				case StopShakeDetect:
+				    mShakeDetector.stop();
+				    break;
 				default:
 					break;
 			}
@@ -115,4 +134,9 @@ public class RootService extends Service {
 		
 		return exception == false;
 	}
+
+    @Override
+    public void onShake() {
+        Toast.makeText(this, "检测到摇晃", Toast.LENGTH_SHORT).show();
+    }
 }

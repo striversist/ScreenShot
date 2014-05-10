@@ -3,32 +3,42 @@ package com.tw.screenshot;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.ServiceConnection;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.HandlerThread;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.adapter.MainFragmentAdapter;
 import com.tw.screenshot.fragment.HomeFragment;
+import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
 import com.tw.screenshot.fragment.HomeFragment.OnStartListener;
 import com.tw.screenshot.service.CommandUtil;
+import com.tw.screenshot.service.IRootRequest;
+import com.tw.screenshot.service.RootService;
+import com.tw.screenshot.utils.SettingUtil;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 
-public class MainActivity extends SherlockFragmentActivity implements Callback {
+public class MainActivity extends SherlockFragmentActivity implements Callback, OnStartListener {
     private static final String TAG = "MainActivity";
     private static final int NOTIFICATION_ID = 1;
     private ViewPager mPager;
@@ -39,6 +49,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback {
     private HandlerThread mWorkerThread;
     private WorkerHandler mWorkerHandler;
     private Handler mUiHandler;
+    private IRootRequest mBackendService;
     private enum WorkerMessage { HasAccess, CheckRoot, GetRoot }
     private enum UiMessage { HasAccessResult, CheckRootResult, GetRootResult }
 
@@ -50,10 +61,18 @@ public class MainActivity extends SherlockFragmentActivity implements Callback {
         mPagerAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         
         HomeFragment homeFragment = new HomeFragment();
-        homeFragment.setOnStartListener(new OnStartListener() {
+        homeFragment.setOnStartListener(this);
+        
+        homeFragment.setOnCheckedChangeListener(new OnCheckedChangeListener() { 
             @Override
-            public void onStart() {
-                finish(false);
+            public void onCheckedChanged(CheckBox checkBox, boolean isChecked) {
+                switch (checkBox.getId()) {
+                    case R.id.shake_checkbox:
+                        SettingUtil.setShakeMode(getApplicationContext(), isChecked);
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         
@@ -71,6 +90,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback {
         mWorkerHandler = new WorkerHandler(mWorkerThread.getLooper());
         mUiHandler = new Handler(this);
         
+        startRootService();
         checkHasRootAccess();
     }
     
@@ -267,5 +287,40 @@ public class MainActivity extends SherlockFragmentActivity implements Callback {
         }
                 
         return true;
+    }
+
+    @Override
+    public void onStarting() {
+        finish(false);
+        if (mBackendService == null) {
+            Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
+            return;
+        }
+        
+        try {
+            if (SettingUtil.getShakeMode(this)) {
+                mBackendService.sendRequest(RootService.RequestType.StartShakeDetect.ordinal(), null, null);
+            } else {
+                mBackendService.sendRequest(RootService.RequestType.StopShakeDetect.ordinal(), null, null);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    private void startRootService() {
+        Intent serviceIntent = new Intent(this, RootService.class);
+        startService(serviceIntent);
+        bindService(serviceIntent, new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+            
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mBackendService = IRootRequest.Stub.asInterface(service);
+            }
+        }, Context.BIND_AUTO_CREATE);
     }
 }
