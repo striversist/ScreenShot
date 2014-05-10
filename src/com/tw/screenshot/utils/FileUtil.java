@@ -26,6 +26,49 @@ public class FileUtil {
         return false;
     }
     
+    public static long getFileSize(String path) {
+        if (!isFileExsit(path))
+            return 0;
+        
+        return new File(path).length();
+    }
+    
+    public static File createNewFile(String fileDir, String fileName) {
+        if (TextUtils.isEmpty(fileDir) || TextUtils.isEmpty(fileName)) {
+            return null;
+        }
+
+        createNewFolder(fileDir);
+
+        // 创建文件
+        File file = new File(fileDir, fileName);
+        if (!file.exists()) {
+            try {
+                if (!file.createNewFile()) {
+                    return null;
+                }
+            } catch (IOException e) {
+                return null;
+            }
+        }
+        return file;
+    }
+    
+    public static File createNewFolder(String fileDir) {
+        if (TextUtils.isEmpty(fileDir)) {
+            return null;
+        }
+        
+        // 文件夹路径
+        File dir = new File(fileDir);
+        if (!dir.exists()) {
+            if (!dir.mkdirs()) {
+                return null;
+            }
+        }
+        return dir;
+    }
+    
     /**
      * 将指定的输入流作为一个文件，保存至指定路径
      * @param iss

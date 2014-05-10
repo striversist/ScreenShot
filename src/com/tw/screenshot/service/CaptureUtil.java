@@ -3,10 +3,13 @@ package com.tw.screenshot.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeoutException;
 
 import android.content.Context;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.CommandCapture;
 import com.tw.screenshot.R;
 import com.tw.screenshot.service.CommandUtil.CommandResultCallback;
 import com.tw.screenshot.utils.FileUtil;
@@ -51,22 +54,29 @@ public class CaptureUtil {
      * @param fileName
      * @return
      */
-    public static String captureWithScreenCap(Context context, String fileName) {
+    public static String captureWithSystemScreenCap(Context context, String fileName) {
         if (context == null || fileName == null)
             return null;
         
-        String command = "screencap -p " + fileName;
+        String binaryName = "screencap";
+        String parameter = " -p " + fileName;
+        String command = binaryName + " " + parameter;
+        int timeout = 5000;
+        
         try {
-            CommandUtil.runCommand(context, true, 5000, command);
+            RootTools.getShell(true).add(new CommandCapture(0, timeout, command));
+            waitForProcessFinish(binaryName, timeout);
         } catch (IOException e) {
             e.printStackTrace();
-            fileName = null;
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (RootDeniedException e) {
+            e.printStackTrace();
         }
-
+        
         return fileName;
     }
 
-    @SuppressWarnings("unused")
     /**
      * 等待指定的processName进程结束
      * @param processName
