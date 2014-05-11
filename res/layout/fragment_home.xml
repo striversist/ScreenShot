@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    
-    <CheckBox android:id="@+id/shake_checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-            android:layout_centerInParent="true" android:text="@string/mode_shake" style="@style/style_checkbox" />
-    <FrameLayout android:layout_width="190.0dip" android:layout_height="65.0dip" android:layout_marginTop="30.0dip"
-            android:layout_centerInParent="true" android:layout_alignParentBottom="true" android:layout_marginBottom="50dip" >
-        <Button android:id="@+id/start_btn" android:layout_height="fill_parent" android:layout_width="fill_parent" 
-                android:background="@drawable/btn_style_blue" android:paddingBottom="15.0dip" android:textSize="22.0dip" 
-                android:textColor="@color/white" android:text="@string/start" />
-        <TextView android:id="@+id/text_tips" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-                android:layout_marginBottom="8.0dip" android:layout_gravity="bottom|center" 
-                android:textColor="@color/white" android:clickable="false" android:text="@string/click_me_start" />
+    android:layout_height="fill_parent"
+    android:background="@color/background" >
+
+    <CheckBox
+        android:id="@+id/shake_checkbox"
+        style="@style/style_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/mode_shake" />
+
+    <FrameLayout
+        android:layout_width="190.0dip"
+        android:layout_height="65.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="50dip"
+        android:layout_marginTop="30.0dip" >
+
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_style_blue"
+            android:paddingBottom="15.0dip"
+            android:text="@string/start"
+            android:textColor="@color/white"
+            android:textSize="22.0dip" />
+
+        <TextView
+            android:id="@+id/text_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="8.0dip"
+            android:clickable="false"
+            android:text="@string/click_me_start"
+            android:textColor="@color/white" />
     </FrameLayout>
 
 </RelativeLayout>

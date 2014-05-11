@@ -44,7 +44,8 @@ public class HistoryManager {
         File[] folderList = rootFolder.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                if (!new File(filename).isDirectory())
+                String fullPath = dir + File.separator + filename;
+                if (!new File(fullPath).isDirectory())
                     return false;
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat(GlobalData.DATE_FORMAT, Locale.getDefault());

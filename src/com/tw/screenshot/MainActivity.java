@@ -28,6 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.adapter.MainFragmentAdapter;
+import com.tw.screenshot.fragment.HistoryFragment;
 import com.tw.screenshot.fragment.HomeFragment;
 import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
 import com.tw.screenshot.fragment.HomeFragment.OnStartListener;
@@ -79,7 +80,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         });
         
         mPagerAdapter.addFragment(homeFragment, "首页");
-        mPagerAdapter.addFragment(new HomeFragment(), "截图");
+        mPagerAdapter.addFragment(new HistoryFragment(), "截图");
         mPagerAdapter.addFragment(new HomeFragment(), "推荐");
         
         mPager = (ViewPager) findViewById(R.id.pager);
