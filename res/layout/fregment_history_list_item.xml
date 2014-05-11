@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_selector"
+    android:minHeight="@dimen/ListItemMinHeight"
+    android:padding="2.0dip" >
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5.0dip"
+        android:layout_marginRight="43.0dip"
+        android:layout_marginTop="5.0dip"
+        android:singleLine="true"
+        android:text="创建时间: 2013年04月18日"
+        android:textColor="#ff070707"
+        android:textSize="19.0dip" />
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="5.0dip"
+        android:layout_marginLeft="5.0dip"
+        android:layout_marginRight="43.0dip"
+        android:maxLines="2"
+        android:text="保存路径: /sdcard/ScreenShot/2013-04-18"
+        android:textColor="#ff808080"
+        android:textSize="12.0dip" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15.0dip"
+        android:src="@drawable/list_item_submenu" />
+
+</RelativeLayout>

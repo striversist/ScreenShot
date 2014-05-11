@@ -31,6 +31,7 @@ import com.tw.screenshot.adapter.MainFragmentAdapter;
 import com.tw.screenshot.fragment.HomeFragment;
 import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
 import com.tw.screenshot.fragment.HomeFragment.OnStartListener;
+import com.tw.screenshot.manager.AppEngine;
 import com.tw.screenshot.service.CommandUtil;
 import com.tw.screenshot.service.IRootRequest;
 import com.tw.screenshot.service.RootService;
@@ -58,6 +59,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AppEngine.getInstance().setAppContext(getApplicationContext());
         mPagerAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         
         HomeFragment homeFragment = new HomeFragment();

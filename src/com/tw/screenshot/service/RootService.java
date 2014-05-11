@@ -16,6 +16,7 @@ import com.stericson.RootTools.execution.Shell;
 import com.tw.screenshot.R;
 import com.tw.screenshot.ShakeDetector;
 import com.tw.screenshot.ShakeDetector.OnShakeListener;
+import com.tw.screenshot.data.GlobalData;
 import com.tw.screenshot.utils.FileUtil;
 
 import android.app.Service;
@@ -182,7 +183,7 @@ public class RootService extends Service implements OnShakeListener {
     }
     
     private String createScreenShotPath() {
-        String folderFormat = "yyyy-MM-dd";
+        String folderFormat = GlobalData.DATE_FORMAT;
         String fileFormat = "HHmmss";
         Date now = new Date();
         
