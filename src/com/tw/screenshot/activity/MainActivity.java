@@ -133,6 +133,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             case R.id.action_about:
                 break;
             case R.id.action_exit:
+                finish(true);
                 break;
         }
         return true;
@@ -141,7 +142,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            finish(true);
+            finish(false);
         }
         return super.dispatchKeyEvent(event);
     }
