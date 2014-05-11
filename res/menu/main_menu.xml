@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark" android:id="@+id/action_menu" android:orderInCategory="0" android:showAsAction="always">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_menu"
+        android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
+        android:orderInCategory="0"
+        android:showAsAction="always"
+        android:title="">
         <menu>
-            <item android:icon="@drawable/ic_action_action_settings" android:id="@+id/action_settings" android:orderInCategory="2" android:title="@string/settings_function" android:showAsAction="always|withText" />
-            <item android:icon="@drawable/ic_action_collections_view_as_list" android:id="@+id/action_help" android:orderInCategory="3" android:title="@string/settings_help" android:showAsAction="always|withText" />
-            <item android:icon="@drawable/ic_action_social_chat" android:id="@+id/action_feedback" android:orderInCategory="4" android:title="@string/settings_feedback" android:showAsAction="always|withText" />
-            <item android:icon="@drawable/ab_icon" android:id="@+id/action_about" android:orderInCategory="5" android:title="@string/settings_about" android:showAsAction="always|withText" />
-            <item android:icon="@drawable/ic_action_content_remove" android:id="@+id/action_exit" android:orderInCategory="5" android:title="@string/settings_exit" android:showAsAction="always|withText" />
+            <item
+                android:id="@+id/action_settings"
+                android:icon="@drawable/ic_action_action_settings"
+                android:orderInCategory="2"
+                android:showAsAction="always|withText"
+                android:title="@string/settings_function"/>
+            <item
+                android:id="@+id/action_help"
+                android:icon="@drawable/ic_action_collections_view_as_list"
+                android:orderInCategory="3"
+                android:showAsAction="always|withText"
+                android:title="@string/settings_help"/>
+            <item
+                android:id="@+id/action_feedback"
+                android:icon="@drawable/ic_action_social_chat"
+                android:orderInCategory="4"
+                android:showAsAction="always|withText"
+                android:title="@string/settings_feedback"/>
+            <item
+                android:id="@+id/action_about"
+                android:icon="@drawable/ab_icon"
+                android:orderInCategory="5"
+                android:showAsAction="always|withText"
+                android:title="@string/settings_about"/>
+            <item
+                android:id="@+id/action_exit"
+                android:icon="@drawable/ic_action_content_remove"
+                android:orderInCategory="5"
+                android:showAsAction="always|withText"
+                android:title="@string/settings_exit"/>
         </menu>
     </item>
+
 </menu>

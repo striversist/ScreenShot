@@ -50,5 +50,5 @@
         <item name="android:drawableRight">@drawable/checkbox_select</item>
         <item name="android:drawablePadding">6sp</item>
     </style>
-    
+    <style name="ProgressBarStyle" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal"/>
 </resources>

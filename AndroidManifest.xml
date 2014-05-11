@@ -40,6 +40,11 @@
             android:label="@string/title_activity_setting"
             android:theme="@style/Theme.SherlockPageIndicator" >
         </activity>
+        <activity
+            android:name="com.tw.screenshot.activity.ImageGridActivity"
+            android:label="@string/title_activity_imagegrid"
+            android:theme="@style/Theme.SherlockPageIndicator" >
+        </activity>
         
         <service
             android:name="com.tw.screenshot.service.RootService"

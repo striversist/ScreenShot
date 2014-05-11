@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.tw.screenshot.R;
+import com.tw.screenshot.activity.ImageGridActivity;
 import com.tw.screenshot.adapter.HistoryListAdapter;
 import com.tw.screenshot.adapter.HistoryListAdapter.HistoryItem;
 import com.tw.screenshot.manager.AppEngine;
@@ -45,7 +46,9 @@ public class HistoryFragment extends SherlockFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
-                Log.d("", "");
+                Intent intent = new Intent(getActivity(), ImageGridActivity.class);
+                intent.putExtra("path", item.path);
+                startActivity(intent);
             }
         });
         
@@ -62,7 +65,7 @@ public class HistoryFragment extends SherlockFragment {
             HistoryItem item = new HistoryItem();
             item.title = folder.getName();
             item.description = folder.getAbsolutePath();
-            item.position = folder.getAbsolutePath();
+            item.path = folder.getAbsolutePath();
             itemList.add(item);
         }
         mListAdapter.setItemList(itemList);
