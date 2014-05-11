@@ -11,4 +11,6 @@ public class GlobalData {
     public static final int    ONE_DAY_MS = 3600 * 24 * 1000;
     public static final int    ONE_MINUTE_MS = 60 * 1000;
     public static final int    ONE_WEEK_MS = ONE_DAY_MS * 7;
+    public static final String IMAGE_URLS = "image_urls";
+    public static final String IMAGE_POSITION = "image_position";
 }

@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.tw.screenshot.R;
+import com.tw.screenshot.data.GlobalData;
 import com.tw.screenshot.utils.FileUtil;
 
 public class ImageGridActivity extends SherlockFragmentActivity implements Callback {
@@ -51,7 +53,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_imagegrid);
+        setContentView(R.layout.activity_image_grid);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mGridView = (GridView) findViewById(R.id.gridview);
@@ -106,7 +108,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
-//                    startImagePagerActivity(position);
+                    startImagePagerActivity(position);
                 }
             });
             break;
@@ -114,12 +116,20 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         return false;
     }
     
-//    private void startImagePagerActivity(int position) {
-//        Intent intent = new Intent(this, ImagePagerActivity.class);
-//        intent.putExtra(Extra.IMAGES, imageUrls);
-//        intent.putExtra(Extra.IMAGE_POSITION, position);
-//        startActivity(intent);
-//    }
+    private void startImagePagerActivity(int position) {
+        Intent intent = new Intent(this, ImagePagerActivity.class);
+        intent.putExtra(GlobalData.IMAGE_URLS, getImageUrls());
+        intent.putExtra(GlobalData.IMAGE_POSITION, position);
+        startActivity(intent);
+    }
+    
+    private String[] getImageUrls() {
+        String[] imageUrls = new String[mImagePathList.size()];
+        for (int i=0; i<mImagePathList.size(); ++i) {
+            imageUrls[i] = FILE_SCHEME + mImagePathList.get(i);
+        }
+        return imageUrls;
+    }
 
     private class ImageHandler extends Handler {
 
