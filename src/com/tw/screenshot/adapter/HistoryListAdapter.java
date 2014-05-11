@@ -20,6 +20,7 @@ public class HistoryListAdapter extends BaseAdapter {
     public static class HistoryItem {
         public String title;
         public String description;
+        public String position;
     }
     
     public HistoryListAdapter(Context context) {

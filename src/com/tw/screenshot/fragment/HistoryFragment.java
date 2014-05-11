@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +41,14 @@ public class HistoryFragment extends SherlockFragment {
         mListAdapter = new HistoryListAdapter(getActivity());
         mListView.setAdapter(mListAdapter);
         
+        mListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
+                Log.d("", "");
+            }
+        });
+        
         return layout;
     }
     
@@ -51,6 +62,7 @@ public class HistoryFragment extends SherlockFragment {
             HistoryItem item = new HistoryItem();
             item.title = folder.getName();
             item.description = folder.getAbsolutePath();
+            item.position = folder.getAbsolutePath();
             itemList.add(item);
         }
         mListAdapter.setItemList(itemList);

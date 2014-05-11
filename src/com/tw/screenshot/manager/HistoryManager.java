@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,6 +62,7 @@ public class HistoryManager {
             for (File folder : folderList) {
                 mFolderList.add(folder);
             }
+            Collections.reverse(mFolderList);
         }
     }
 }

@@ -1,7 +1,8 @@
-package com.tw.screenshot;
+package com.tw.screenshot.activity;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.tw.screenshot.R;
 
 import android.os.Bundle;
 

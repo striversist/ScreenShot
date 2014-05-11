@@ -1,4 +1,4 @@
-package com.tw.screenshot;
+package com.tw.screenshot.activity;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.MainFragmentAdapter;
 import com.tw.screenshot.fragment.HistoryFragment;
 import com.tw.screenshot.fragment.HomeFragment;
