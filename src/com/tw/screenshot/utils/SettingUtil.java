@@ -22,6 +22,7 @@ public class SettingUtil {
     private static final String keyShakeMode = "key_shake_mode";
     private static final String keyShakeSensitivity = "key_shake_sensitivity";
     private static final String keyScreenShotVibrary = "key_screenshot_vibrate";
+    private static final String keyDelayTime = "key_delay_time";
 
     private interface IPreference {
         Boolean getBoolean(Context context, String key, boolean defValue);
@@ -250,6 +251,14 @@ public class SettingUtil {
     
     public static boolean getScreenShotVibrate(Context context, boolean defValue) {
         return getBooleanPreferences(context, keyScreenShotVibrary, defValue);
+    }
+    
+    public static void setDelayTime(Context context, int time) {
+        setIntegerPreferences(context, keyDelayTime, time);
+    }
+    
+    public static int getDelayTime(Context context, int defValue) {
+        return getIntegerPreferences(context, keyDelayTime, defValue);
     }
 
     public static void setTestString(Context context, String key, String text) {

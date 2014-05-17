@@ -15,7 +15,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
 
     private static final String KEY_SEEKBAR_PREFERENCE = "seekbar_preference";
     private static final String KEY_VIBRATE_PREFERENCE = "vibrate_preference";
+    private static final String KEY_DELAY_PREFERENCE   = "delay_preference";
     
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +25,6 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
         
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addPreferencesFromResource(R.xml.preferences);
-        
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
     
@@ -45,6 +46,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
         } else if (TextUtils.equals(key, KEY_VIBRATE_PREFERENCE)) {
             boolean vibrate = sharedPreferences.getBoolean(key, true);
             SettingUtil.setScreenShotVibrate(getApplicationContext(), vibrate);
+        } else if (TextUtils.equals(key, KEY_DELAY_PREFERENCE)) {
+            String delayTime = sharedPreferences.getString(key, getString(R.string.default_delay_value));
+            SettingUtil.setDelayTime(getApplicationContext(), Integer.valueOf(delayTime));
         }
     }
 }

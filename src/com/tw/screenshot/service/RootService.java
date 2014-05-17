@@ -29,6 +29,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 public class RootService extends Service implements OnShakeListener {
@@ -154,15 +155,23 @@ public class RootService extends Service implements OnShakeListener {
 
     @Override
     public void onShake() {
-//        Toast.makeText(this, "检测到摇晃", Toast.LENGTH_SHORT).show();
         long now = System.currentTimeMillis();
         if (now - mLastShakeTime < 1500) {   // 防抖
             return;
         }
         mLastShakeTime = System.currentTimeMillis();
+        
+        final int delayTime = SettingUtil.getDelayTime(getApplicationContext(), 5);
         new Thread(new Runnable() {
             @Override
-            public void run() {       
+            public void run() {
+                try {
+                    if (delayTime > 0) {
+                        Thread.sleep(delayTime * 1000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 String resultPath = takeScreenShot(createScreenShotPath());
                 if (isFileAvailable(resultPath)) {
                     makeToast("截图保存：" + resultPath, true);
@@ -172,11 +181,16 @@ public class RootService extends Service implements OnShakeListener {
             }
         }).start();
         
+        if (delayTime >= 5) {
+            String tips = String.format(Locale.getDefault(), "将在%d秒后截取屏幕", delayTime);
+            Toast localToast = Toast.makeText(this, tips, Toast.LENGTH_SHORT);
+            localToast.setGravity(Gravity.CENTER, 0, 0);
+            localToast.show();
+        }
         if (SettingUtil.getScreenShotVibrate(getApplicationContext(), true)) {
             Vibrator vib = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
             vib.vibrate(300);
         }
-        Toast.makeText(getApplicationContext(), "摇一摇正在截图", Toast.LENGTH_SHORT).show();
     }
     
     private void makeToast(final String text, final boolean longTime) {

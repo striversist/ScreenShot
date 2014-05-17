@@ -5,6 +5,24 @@
         <item>截图</item>
         <item>推荐</item>
     </string-array>
+   
+    <string-array name="entries_list_delay">
+        <item>不延时</item>
+        <item>2秒</item>
+        <item>5秒</item>
+        <item>10秒</item>
+        <item>15秒</item>
+        <item>30秒</item>
+    </string-array>
+    
+    <string-array name="entryvalues_list_delay">
+        <item>0</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+    </string-array>
     
     <string-array name="entries_list_preference">
         <item>Alpha Option 01</item>
