@@ -14,6 +14,7 @@ import android.util.Log;
  * 
  */
 public class ShakeDetector implements SensorEventListener {
+    public static final int DEFAULT_SHAKE_SENSITIVITY = 30;
     // 检测的时间间隔
     private static final int UPDATE_INTERVAL = 100;
     // 最小摇晃阈值

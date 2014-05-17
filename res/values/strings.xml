@@ -19,6 +19,9 @@
     <string name="enter_main_page">进入主界面</string>
     <string name="no_data">没有数据</string>
     <string name="descr_image">Image</string>
+    <string name="shake">摇晃</string>
+    <string name="shake_sensitivity">摇晃敏感度</string>
+    <string name="shake_prefer_summary">设置摇一摇截图的敏感度</string>
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>
     <string name="launch_preferences">Launch preferences</string>

@@ -54,6 +54,7 @@
         <service
             android:name="com.tw.screenshot.service.RootService"
             android:exported="false"
+            android:persistent="true"
             android:process=":backend" />
     </application>
 

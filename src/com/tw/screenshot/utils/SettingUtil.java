@@ -1,13 +1,16 @@
 package com.tw.screenshot.utils;
 
+import com.tw.screenshot.ShakeDetector;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class SettingUtil {
 
-    private static final String keyAppFirstBoot = "key_app_first_boot";
-    private static final String keyShakeMode = "key_shake_mode";
+    private static final String keyAppFirstBoot     = "key_app_first_boot";
+    private static final String keyShakeMode        = "key_shake_mode";
+    private static final String keyShakeSensitivity = "key_shake_sensitivity";
     
     private static Boolean getBooleanPreferences(Context context, String key, boolean defValue) {
         return Boolean.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defValue));
@@ -16,6 +19,16 @@ public class SettingUtil {
     private static void setBooleanPreferences(Context context, String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putBoolean(key, value);
+        editor.commit();
+    }
+    
+    private static Integer getIntegerPreferences(Context context, String key, int defValue) {
+        return Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getInt(key, defValue));
+    }
+    
+    public static void setIntegerPreferences(Context context, String key, int value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putInt(key, value);
         editor.commit();
     }
     
@@ -33,6 +46,14 @@ public class SettingUtil {
     
     public static boolean isAppFirstBoot(Context context) {
         return getBooleanPreferences(context, keyAppFirstBoot, true);
+    }
+    
+    public static void setShakeSensitivity(Context context, int sensitivity) {
+        setIntegerPreferences(context, keyShakeSensitivity, sensitivity);
+    }
+    
+    public static int getShakeSensitivity(Context context) {
+        return getIntegerPreferences(context, keyShakeSensitivity, ShakeDetector.DEFAULT_SHAKE_SENSITIVITY);
     }
     
     public static void setTestString(Context context, String key, String text) {

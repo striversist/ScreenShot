@@ -3,11 +3,18 @@ package com.tw.screenshot.activity;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.R;
+import com.tw.screenshot.ShakeDetector;
+import com.tw.screenshot.utils.SettingUtil;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.text.TextUtils;
 
-public class SettingActivity extends SherlockPreferenceActivity {
+public class SettingActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
+    private static final String KEY_SEEKBAR_PREFERENCE = "seekbar_preference";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,6 +22,8 @@ public class SettingActivity extends SherlockPreferenceActivity {
         
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addPreferencesFromResource(R.xml.preferences);
+        
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
     
     @Override
@@ -25,5 +34,13 @@ public class SettingActivity extends SherlockPreferenceActivity {
                 break;
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (TextUtils.equals(key, KEY_SEEKBAR_PREFERENCE)) {
+            int sensitivity = sharedPreferences.getInt(key, ShakeDetector.DEFAULT_SHAKE_SENSITIVITY);
+            SettingUtil.setShakeSensitivity(getApplicationContext(), sensitivity);
+        }
     }
 }

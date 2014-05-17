@@ -77,6 +77,7 @@ public class RootService extends Service implements OnShakeListener {
 					break;
 				case ShakeDetect:
 				    if (SettingUtil.getShakeMode(getApplicationContext())) {
+				        mShakeDetector.setSensitivity(SettingUtil.getShakeSensitivity(getApplicationContext()));
 				        if (!mShakeDetector.start()) {
 	                        Toast.makeText(getApplicationContext(), "您的手机不支持摇晃截屏", Toast.LENGTH_LONG).show();
 	                    }

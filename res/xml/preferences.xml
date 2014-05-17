@@ -16,7 +16,15 @@
 
 <!-- This is a primitive example showing the different types of preferences available. -->
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:example="http://schemas.android.com/apk/res/com.tw.screenshot">
+        
+    <PreferenceCategory android:title="@string/shake" android:key="shake" >
+        <com.tw.screenshot.component.SeekBarPreference
+            android:key="seekbar_preference" android:title="@string/shake_sensitivity"
+            android:dialogTitle="@string/shake_sensitivity" android:summary="@string/shake_prefer_summary" 
+            android:defaultValue="30" example:minValue="1" example:maxValue="100" />
+    </PreferenceCategory>
 
     <PreferenceCategory
             android:title="@string/inline_preferences">
