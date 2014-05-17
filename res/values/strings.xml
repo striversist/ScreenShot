@@ -22,6 +22,9 @@
     <string name="shake">摇晃</string>
     <string name="shake_sensitivity">摇晃敏感度</string>
     <string name="shake_prefer_summary">设置摇一摇截图的敏感度</string>
+    <string name="vibrate">震动</string>
+    <string name="title_vibrate">截屏时震动</string>
+    
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>
     <string name="launch_preferences">Launch preferences</string>

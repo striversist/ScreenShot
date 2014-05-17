@@ -20,7 +20,7 @@ public class ShakeDetector implements SensorEventListener {
     // 最小摇晃阈值
     private static final int MIN_SHAKE_THRESHOLD = 100;
     private static final int DEFAULT_SHAKE_THREADHOLD = MIN_SHAKE_THRESHOLD * 10;
-    private static final int MAX_SHAKE_THRESHOLD = DEFAULT_SHAKE_THREADHOLD * 2;
+    private static final int MAX_SHAKE_THRESHOLD = DEFAULT_SHAKE_THREADHOLD * 3;
 
     private Context mContext;
     private SensorManager mSensorManager;

@@ -27,6 +27,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -159,10 +160,9 @@ public class RootService extends Service implements OnShakeListener {
             return;
         }
         mLastShakeTime = System.currentTimeMillis();
-        Toast.makeText(getApplicationContext(), "摇一摇正在截图", Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             @Override
-            public void run() {
+            public void run() {       
                 String resultPath = takeScreenShot(createScreenShotPath());
                 if (isFileAvailable(resultPath)) {
                     makeToast("截图保存：" + resultPath, true);
@@ -171,6 +171,12 @@ public class RootService extends Service implements OnShakeListener {
                 }
             }
         }).start();
+        
+        if (SettingUtil.getScreenShotVibrate(getApplicationContext(), true)) {
+            Vibrator vib = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+            vib.vibrate(300);
+        }
+        Toast.makeText(getApplicationContext(), "摇一摇正在截图", Toast.LENGTH_SHORT).show();
     }
     
     private void makeToast(final String text, final boolean longTime) {

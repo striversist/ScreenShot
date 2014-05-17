@@ -14,6 +14,7 @@ import android.text.TextUtils;
 public class SettingActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
     private static final String KEY_SEEKBAR_PREFERENCE = "seekbar_preference";
+    private static final String KEY_VIBRATE_PREFERENCE = "vibrate_preference";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
         if (TextUtils.equals(key, KEY_SEEKBAR_PREFERENCE)) {
             int sensitivity = sharedPreferences.getInt(key, ShakeDetector.DEFAULT_SHAKE_SENSITIVITY);
             SettingUtil.setShakeSensitivity(getApplicationContext(), sensitivity);
+        } else if (TextUtils.equals(key, KEY_VIBRATE_PREFERENCE)) {
+            boolean vibrate = sharedPreferences.getBoolean(key, true);
+            SettingUtil.setScreenShotVibrate(getApplicationContext(), vibrate);
         }
     }
 }

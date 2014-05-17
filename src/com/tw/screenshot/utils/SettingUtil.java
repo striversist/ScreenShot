@@ -21,6 +21,7 @@ public class SettingUtil {
     private static final String keyAppFirstBoot = "key_app_first_boot";
     private static final String keyShakeMode = "key_shake_mode";
     private static final String keyShakeSensitivity = "key_shake_sensitivity";
+    private static final String keyScreenShotVibrary = "key_screenshot_vibrate";
 
     private interface IPreference {
         Boolean getBoolean(Context context, String key, boolean defValue);
@@ -241,6 +242,14 @@ public class SettingUtil {
     public static int getShakeSensitivity(Context context) {
         return getIntegerPreferences(context, keyShakeSensitivity,
                 ShakeDetector.DEFAULT_SHAKE_SENSITIVITY);
+    }
+    
+    public static void setScreenShotVibrate(Context context, boolean enable) {
+        setBooleanPreferences(context, keyScreenShotVibrary, enable);
+    }
+    
+    public static boolean getScreenShotVibrate(Context context, boolean defValue) {
+        return getBooleanPreferences(context, keyScreenShotVibrary, defValue);
     }
 
     public static void setTestString(Context context, String key, String text) {
