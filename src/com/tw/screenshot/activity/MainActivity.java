@@ -113,6 +113,12 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         super.onResume();
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SettingUtil.setAppFirstBoot(getApplicationContext(), false);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -259,14 +265,18 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             case CheckRootResult:
                 Boolean checkRootResult = (Boolean) msg.obj;
                 if (checkRootResult) {
-                    new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，检测到您的手机已经root\n接下来请您授权本软件\n（否则将无法截屏哦）")
-                    .setPositiveButton("确定", new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            getRootAccess();
-                        }
-                    }).create().show();
+                    if (SettingUtil.isAppFirstBoot(getApplicationContext())) {
+                        new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，检测到您的手机已经root\n接下来请您授权本软件\n（否则将无法截屏哦）")
+                        .setPositiveButton("确定", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                getRootAccess();
+                            }
+                        }).create().show();
+                    } else {
+                        getRootAccess();
+                    }
                 } else {
                     new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，您的手机没有root权限，将无法截屏")
                     .setPositiveButton("确定", new OnClickListener() {

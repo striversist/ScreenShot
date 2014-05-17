@@ -6,10 +6,11 @@ import android.preference.PreferenceManager;
 
 public class SettingUtil {
 
+    private static final String keyAppFirstBoot = "key_app_first_boot";
     private static final String keyShakeMode = "key_shake_mode";
     
-    private static Boolean getBooleanPreferences(Context context, String key) {
-        return Boolean.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, false));
+    private static Boolean getBooleanPreferences(Context context, String key, boolean defValue) {
+        return Boolean.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defValue));
     }
     
     private static void setBooleanPreferences(Context context, String key, boolean value) {
@@ -23,7 +24,15 @@ public class SettingUtil {
     }
     
     public static boolean getShakeMode(Context context) {
-        return getBooleanPreferences(context, keyShakeMode);
+        return getBooleanPreferences(context, keyShakeMode, false);
+    }
+    
+    public static void setAppFirstBoot(Context context, boolean first) {
+        setBooleanPreferences(context, keyAppFirstBoot, first);
+    }
+    
+    public static boolean isAppFirstBoot(Context context) {
+        return getBooleanPreferences(context, keyAppFirstBoot, true);
     }
     
     public static void setTestString(Context context, String key, String text) {
