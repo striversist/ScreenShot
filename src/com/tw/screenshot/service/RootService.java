@@ -18,6 +18,7 @@ import com.tw.screenshot.ShakeDetector;
 import com.tw.screenshot.ShakeDetector.OnShakeListener;
 import com.tw.screenshot.data.GlobalData;
 import com.tw.screenshot.utils.FileUtil;
+import com.tw.screenshot.utils.SettingUtil;
 
 import android.app.Service;
 import android.content.Intent;
@@ -33,7 +34,7 @@ public class RootService extends Service implements OnShakeListener {
 	
 	private static final String TAG = "RootService";
 	private static int sRequestId = 0;
-	public enum RequestType { RunCommand, GetRootAccess, QueryRootAccess, StartShakeDetect, StopShakeDetect }
+	public enum RequestType { RunCommand, GetRootAccess, QueryRootAccess, ShakeDetect }
 	private ShakeDetector mShakeDetector;
 	private long mLastShakeTime;
 	private Handler mUiHandler;
@@ -74,13 +75,14 @@ public class RootService extends Service implements OnShakeListener {
 						result = 1;
 					}
 					break;
-				case StartShakeDetect:
-				    if (!mShakeDetector.start()) {
-				        Toast.makeText(getApplicationContext(), "您的手机不支持摇晃截屏", Toast.LENGTH_LONG).show();
+				case ShakeDetect:
+				    if (SettingUtil.getShakeMode(getApplicationContext())) {
+				        if (!mShakeDetector.start()) {
+	                        Toast.makeText(getApplicationContext(), "您的手机不支持摇晃截屏", Toast.LENGTH_LONG).show();
+	                    }
+				    } else {
+				        mShakeDetector.stop();
 				    }
-				    break;
-				case StopShakeDetect:
-				    mShakeDetector.stop();
 				    break;
 				default:
 					break;

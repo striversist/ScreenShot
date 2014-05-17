@@ -36,15 +36,11 @@ public class CommandUtil {
 	}
 	
 	/**
-	 * 判断手机有没有被root（一般不会弹出授权框）
+	 * 判断手机有没有被root
 	 * @return
 	 */
 	public static boolean isRootAvailable() {
-        if (findBinary("su")) {
-            return true; 
-        }
-        
-        return RootTools.isRootAvailable();
+        return findBinary("su");
     }
 	
 	/**

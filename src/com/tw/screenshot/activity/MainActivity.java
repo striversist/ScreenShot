@@ -303,11 +303,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         }
         
         try {
-            if (SettingUtil.getShakeMode(this)) {
-                mBackendService.sendRequest(RootService.RequestType.StartShakeDetect.ordinal(), null, null);
-            } else {
-                mBackendService.sendRequest(RootService.RequestType.StopShakeDetect.ordinal(), null, null);
-            }
+            mBackendService.sendRequest(RootService.RequestType.ShakeDetect.ordinal(), null, null);
         } catch (RemoteException e) {
             e.printStackTrace();
             Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
