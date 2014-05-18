@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.tw.screenshot.R;
-import com.tw.screenshot.data.GlobalData;
+import com.tw.screenshot.data.Constant;
 import com.tw.screenshot.utils.FileUtil;
 
 import android.content.Context;
@@ -49,7 +49,7 @@ public class HistoryManager {
                 if (!new File(fullPath).isDirectory())
                     return false;
                 try {
-                    SimpleDateFormat sdf = new SimpleDateFormat(GlobalData.DATE_FORMAT, Locale.getDefault());
+                    SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
                     sdf.parse(filename);
                 } catch (ParseException e) {
                     return false;

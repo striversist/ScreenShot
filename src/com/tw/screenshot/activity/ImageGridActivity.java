@@ -22,12 +22,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.GridImageAdapter;
-import com.tw.screenshot.data.GlobalData;
+import com.tw.screenshot.data.Constant;
 import com.tw.screenshot.utils.FileUtil;
 
 public class ImageGridActivity extends SherlockFragmentActivity implements Callback {
 
-    private static final String FILE_SCHEME = "file://";
     private String mPath;
     private List<String> mImagePathList = new ArrayList<String>();
     private HandlerThread mThread;
@@ -102,15 +101,15 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
     
     private void startImagePagerActivity(int position) {
         Intent intent = new Intent(this, ImagePagerActivity.class);
-        intent.putExtra(GlobalData.IMAGE_URLS, getImageUrls());
-        intent.putExtra(GlobalData.IMAGE_POSITION, position);
+        intent.putExtra(Constant.IMAGE_URLS, getImageUrls());
+        intent.putExtra(Constant.IMAGE_POSITION, position);
         startActivity(intent);
     }
     
     private String[] getImageUrls() {
         String[] imageUrls = new String[mImagePathList.size()];
         for (int i=0; i<mImagePathList.size(); ++i) {
-            imageUrls[i] = FILE_SCHEME + mImagePathList.get(i);
+            imageUrls[i] = Constant.FILE_SCHEME + mImagePathList.get(i);
         }
         return imageUrls;
     }

@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.tw.screenshot.R;
+import com.tw.screenshot.data.Constant;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,7 +22,6 @@ import android.widget.ProgressBar;
 
 public class GridImageAdapter extends BaseAdapter {
 
-    private static final String FILE_SCHEME = "file://";
     private Context mContext;
     private ImageLoader mImageLoader;
     private DisplayImageOptions mOptions;
@@ -78,7 +78,7 @@ public class GridImageAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        String imageUrl = FILE_SCHEME + mImagePathList.get(position);
+        String imageUrl = Constant.FILE_SCHEME + mImagePathList.get(position);
         mImageLoader.displayImage(imageUrl, holder.imageView, mOptions,
                 new SimpleImageLoadingListener() {
                     @Override

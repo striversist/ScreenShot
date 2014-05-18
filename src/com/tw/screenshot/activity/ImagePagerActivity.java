@@ -10,7 +10,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.tw.screenshot.R;
-import com.tw.screenshot.data.GlobalData;
+import com.tw.screenshot.data.Constant;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -41,11 +41,11 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
         if (bundle == null)
             return;
         
-        String[] imageUrls = bundle.getStringArray(GlobalData.IMAGE_URLS);
+        String[] imageUrls = bundle.getStringArray(Constant.IMAGE_URLS);
         if (imageUrls == null)
             return;
         
-        int pagerPosition = bundle.getInt(GlobalData.IMAGE_POSITION, 0);
+        int pagerPosition = bundle.getInt(Constant.IMAGE_POSITION, 0);
         if (savedInstanceState != null) {
             pagerPosition = savedInstanceState.getInt(STATE_POSITION);
         }
