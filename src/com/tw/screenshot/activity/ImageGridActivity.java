@@ -29,6 +29,7 @@ import com.tw.screenshot.utils.FileUtil;
 
 public class ImageGridActivity extends SherlockFragmentActivity implements Callback {
 
+    private static final int RequestCode = 100;
     private String mPath;
     private HandlerThread mHandlerThread;
     private ImageHandler mWorkHandler;
@@ -112,20 +113,23 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         return false;
     }
     
-    private void startImagePagerActivity(int position) {
-        Intent intent = new Intent(this, ImagePagerActivity.class);
-        intent.putExtra(Constant.IMAGE_URLS, getImageUrls());
-        intent.putExtra(Constant.IMAGE_POSITION, position);
-        startActivity(intent);
+    @Override  
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != RequestCode || data == null)
+            return;
+        ArrayList<String> deletedImageList = data.getStringArrayListExtra(Constant.DELETED_IMAGE_PATHS);
+        if (deletedImageList == null || deletedImageList.isEmpty())
+            return;
+        if (mAdapter != null) {
+            mAdapter.deleteImageList(deletedImageList);
+        }
     }
     
-    private String[] getImageUrls() {
-        ArrayList<String> imagePathList = mAdapter.getAllImagePath();
-        String[] imageUrls = new String[imagePathList.size()];
-        for (int i=0; i<imagePathList.size(); ++i) {
-            imageUrls[i] = Constant.FILE_SCHEME + imagePathList.get(i);
-        }
-        return imageUrls;
+    private void startImagePagerActivity(int position) {
+        Intent intent = new Intent(this, ImagePagerActivity.class);
+        intent.putExtra(Constant.IMAGE_PATHS, mAdapter.getAllImagePath().toArray(new String[0]));
+        intent.putExtra(Constant.IMAGE_POSITION, position);
+        startActivityForResult(intent, RequestCode);
     }
 
     private class ImageHandler extends Handler {

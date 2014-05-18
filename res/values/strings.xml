@@ -30,6 +30,10 @@
     <string name="default_delay_value">5</string>
     <string name="select_image_tips">请选择要删除的图片</string>
     <string name="dialog_delete_msg">删除中，请稍后...</string>
+    <string name="dialog_title_delete_image">删除图片</string>
+    <string name="dialog_msg_delete_image">确定要删除该图片吗？</string>
+    <string name="dialog_positive_btn_text">确定</string>
+    <string name="dialog_negative_btn_text">取消</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>

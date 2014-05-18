@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListene
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.tw.screenshot.R;
 import com.tw.screenshot.data.Constant;
+import com.tw.screenshot.utils.StringUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -149,7 +150,7 @@ public class GridImageAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        String imageUrl = Constant.FILE_SCHEME + mImageItemList.get(position).path;
+        String imageUrl = StringUtil.getFileUrl(mImageItemList.get(position).path);
         mImageLoader.displayImage(imageUrl, holder.imageView, mOptions,
                 new SimpleImageLoadingListener() {
                     @Override

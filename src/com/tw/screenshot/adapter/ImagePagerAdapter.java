@@ -1,5 +1,7 @@
 package com.tw.screenshot.adapter;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
@@ -18,19 +20,22 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.tw.screenshot.R;
+import com.tw.screenshot.utils.StringUtil;
 
 public class ImagePagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private ImageLoader mImageLoader;
     private DisplayImageOptions mOptions;
-    private String[] mImages;
+    private ArrayList<String> mImagePathList = new ArrayList<String>();
 
-    public ImagePagerAdapter(Context context, String[] images) {
+    public ImagePagerAdapter(Context context, String[] imagePaths) {
         assert (context != null);
-        assert (images != null);
+        assert (imagePaths != null);
         mContext = context;
-        mImages = images;
+        for (String path : imagePaths) {
+            mImagePathList.add(path);
+        }
         mImageLoader = ImageLoader.getInstance();
         mOptions = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.ic_empty)
@@ -40,6 +45,25 @@ public class ImagePagerAdapter extends PagerAdapter {
                 .bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
                 .displayer(new FadeInBitmapDisplayer(300)).build();
     }
+    
+    public void removeImage(int position) {
+        mImagePathList.remove(position);
+        notifyDataSetChanged();
+    }
+    
+    public void removeImage(String path) {
+        mImagePathList.remove(path);
+        notifyDataSetChanged();
+    }
+    
+    public String getImagePath(int position) {
+        return mImagePathList.get(position);
+    }
+    
+    @Override
+    public int getItemPosition(Object object) {
+        return PagerAdapter.POSITION_NONE;
+    }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -48,7 +72,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mImages.length;
+        return mImagePathList.size();
     }
 
     @Override
@@ -60,7 +84,8 @@ public class ImagePagerAdapter extends PagerAdapter {
         final ProgressBar spinner = (ProgressBar) imageLayout
                 .findViewById(R.id.loading);
 
-        mImageLoader.displayImage(mImages[position], imageView, mOptions,
+        String imageUrl = StringUtil.getFileUrl(mImagePathList.get(position));
+        mImageLoader.displayImage(imageUrl, imageView, mOptions,
                 new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {

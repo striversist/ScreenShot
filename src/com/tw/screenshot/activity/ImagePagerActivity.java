@@ -1,5 +1,11 @@
 package com.tw.screenshot.activity;
 
+import java.util.ArrayList;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
@@ -9,12 +15,14 @@ import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.ImagePagerAdapter;
 import com.tw.screenshot.data.Constant;
+import com.tw.screenshot.utils.FileUtil;
 
 public class ImagePagerActivity extends SherlockFragmentActivity {
 
     private static final String STATE_POSITION = "STATE_POSITION";
     private ViewPager mPager;
     private ImagePagerAdapter mAdapter;
+    private ArrayList<String> mDeletedImagePathList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +34,8 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
         if (bundle == null)
             return;
 
-        String[] imageUrls = bundle.getStringArray(Constant.IMAGE_URLS);
-        if (imageUrls == null)
+        String[] imagePaths = bundle.getStringArray(Constant.IMAGE_PATHS);
+        if (imagePaths == null)
             return;
 
         int pagerPosition = bundle.getInt(Constant.IMAGE_POSITION, 0);
@@ -36,7 +44,7 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
         }
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        mAdapter = new ImagePagerAdapter(this, imageUrls);
+        mAdapter = new ImagePagerAdapter(this, imagePaths);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(pagerPosition);
     }
@@ -54,6 +62,29 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
             finish();
             break;
         case R.id.action_delete:
+            new AlertDialog.Builder(this).setTitle(R.string.dialog_title_delete_image)
+                .setMessage(R.string.dialog_msg_delete_image)
+                .setPositiveButton(R.string.dialog_positive_btn_text, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int position = mPager.getCurrentItem();
+                        String path = mAdapter.getImagePath(position);
+                        FileUtil.deleteFile(path);
+                        mDeletedImagePathList.add(path);
+                        mPager.removeViewAt(position);
+                        mAdapter.removeImage(position);
+                        
+                        Intent data = new Intent();
+                        data.putStringArrayListExtra(Constant.DELETED_IMAGE_PATHS, mDeletedImagePathList);
+                        setResult(100, data);
+                    }
+                })
+                .setNegativeButton(R.string.dialog_negative_btn_text, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
             break;
         }
         return true;
