@@ -64,6 +64,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         mImageHandler = new ImageHandler(mThread.getLooper());
         mImageLoader = ImageLoader.getInstance();
 
+        mGridView.setFastScrollEnabled(true);
         mOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_stub)
                 .showImageForEmptyUri(R.drawable.ic_empty)
