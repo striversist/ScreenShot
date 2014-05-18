@@ -9,6 +9,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
+
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
 import com.stericson.RootTools.execution.Command;
@@ -17,20 +28,9 @@ import com.tw.screenshot.R;
 import com.tw.screenshot.ShakeDetector;
 import com.tw.screenshot.ShakeDetector.OnShakeListener;
 import com.tw.screenshot.data.Constant;
+import com.tw.screenshot.utils.DeviceUtil;
 import com.tw.screenshot.utils.FileUtil;
 import com.tw.screenshot.utils.SettingUtil;
-
-import android.app.Service;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.os.Vibrator;
-import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
 public class RootService extends Service implements OnShakeListener {
 	
@@ -188,8 +188,7 @@ public class RootService extends Service implements OnShakeListener {
             localToast.show();
         }
         if (SettingUtil.getScreenShotVibrate(getApplicationContext(), true)) {
-            Vibrator vib = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-            vib.vibrate(300);
+            DeviceUtil.vibrate(getApplicationContext(), 300);
         }
     }
     

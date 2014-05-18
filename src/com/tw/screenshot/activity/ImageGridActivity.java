@@ -14,6 +14,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,6 +26,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.GridImageAdapter;
 import com.tw.screenshot.data.Constant;
+import com.tw.screenshot.utils.DeviceUtil;
 import com.tw.screenshot.utils.FileUtil;
 
 public class ImageGridActivity extends SherlockFragmentActivity implements Callback {
@@ -106,6 +108,14 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                     } else {
                         startImagePagerActivity(position);
                     }
+                }
+            });
+            mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    DeviceUtil.vibrate(getApplicationContext(), 200);
+                    return true;
                 }
             });
             break;
