@@ -1,17 +1,21 @@
 package com.tw.screenshot.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.ImagePagerAdapter;
 import com.tw.screenshot.data.Constant;
@@ -23,6 +27,7 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
     private ViewPager mPager;
     private ImagePagerAdapter mAdapter;
     private ArrayList<String> mDeletedImagePathList = new ArrayList<String>();
+    private Intent mShareIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +52,45 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
         mAdapter = new ImagePagerAdapter(this, imagePaths);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(pagerPosition);
+        mShareIntent = createShareIntent(getCurrentImagePath());
+        
+        mPager.setOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                Uri uri = Uri.fromFile(new File(getCurrentImagePath()));
+                mShareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            }
+            
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.image_grid_menu, menu);
+        getSupportMenuInflater().inflate(R.menu.image_pager_menu, menu);
+        MenuItem actionItem = menu.findItem(R.id.menu_item_share_action_provider_action_bar);
+        ShareActionProvider actionProvider = (ShareActionProvider) actionItem.getActionProvider();
+        actionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+        actionProvider.setShareIntent(mShareIntent);
         return super.onCreateOptionsMenu(menu);
+    }
+    
+    private String getCurrentImagePath() {
+        return mAdapter.getImagePath(mPager.getCurrentItem());
+    }
+    
+    private Intent createShareIntent(String imagePath) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        Uri uri = Uri.fromFile(new File(imagePath));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        return shareIntent;
     }
 
     @Override

@@ -36,6 +36,7 @@
     <string name="dialog_negative_btn_text">取消</string>
     <string name="share">分享</string>
     <string name="please_choose">请选择</string>
+    <string name="action_bar_share_with">分享...</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>

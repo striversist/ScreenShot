@@ -4,8 +4,12 @@
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_delete"
-        android:orderInCategory="2"
         android:showAsAction="always|withText"
         android:title="@string/settings_delete"/>
+    <item
+        android:id="@+id/menu_item_share_action_provider_action_bar"
+        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
+        android:showAsAction="always"
+        android:title="@string/action_bar_share_with"/>
 
 </menu>
