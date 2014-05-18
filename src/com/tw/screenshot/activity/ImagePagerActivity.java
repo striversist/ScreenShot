@@ -71,7 +71,6 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
                         String path = mAdapter.getImagePath(position);
                         FileUtil.deleteFile(path);
                         mDeletedImagePathList.add(path);
-                        mPager.removeViewAt(position);
                         mAdapter.removeImage(position);
                         
                         Intent data = new Intent();
