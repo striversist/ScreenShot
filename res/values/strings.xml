@@ -34,6 +34,8 @@
     <string name="dialog_msg_delete_image">确定要删除该图片吗？</string>
     <string name="dialog_positive_btn_text">确定</string>
     <string name="dialog_negative_btn_text">取消</string>
+    <string name="share">分享</string>
+    <string name="please_choose">请选择</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>

@@ -24,6 +24,10 @@
         <item>30</item>
     </string-array>
     
+    <string-array name="longclick_image_menu">
+        <item>分享</item>
+    </string-array>
+    
     <string-array name="entries_list_preference">
         <item>Alpha Option 01</item>
         <item>Beta Option 02</item>

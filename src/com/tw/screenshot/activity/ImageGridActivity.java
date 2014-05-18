@@ -4,20 +4,23 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Handler.Callback;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -113,14 +116,29 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
             mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view,
-                        int position, long id) {
+                        final int position, long id) {
                     DeviceUtil.vibrate(getApplicationContext(), 200);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ImageGridActivity.this).setTitle(null);
+                    builder.setItems(R.array.longclick_image_menu, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(Intent.createChooser(createShareIntent(mAdapter.getImagePath(position)), getString(R.string.please_choose)));
+                        }
+                    }).create().show();
                     return true;
                 }
             });
             break;
         }
         return false;
+    }
+    
+    private Intent createShareIntent(String imagePath) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        Uri uri = Uri.fromFile(new File(imagePath));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        return shareIntent;
     }
     
     @Override  

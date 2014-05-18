@@ -116,6 +116,10 @@ public class GridImageAdapter extends BaseAdapter {
         }
         return allImagePath;
     }
+    
+    public String getImagePath(int position) {
+        return mImageItemList.get(position).path;
+    }
 
     @Override
     public int getCount() {
