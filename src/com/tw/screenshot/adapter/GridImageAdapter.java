@@ -3,15 +3,6 @@ package com.tw.screenshot.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-import com.tw.screenshot.R;
-import com.tw.screenshot.data.Constant;
-import com.tw.screenshot.utils.StringUtil;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -20,6 +11,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.tw.screenshot.R;
+import com.tw.screenshot.utils.StringUtil;
 
 public class GridImageAdapter extends BaseAdapter {
 
