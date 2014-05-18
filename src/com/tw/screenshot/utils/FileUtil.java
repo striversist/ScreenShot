@@ -69,6 +69,24 @@ public class FileUtil {
         return dir;
     }
     
+    public static boolean deleteFile(String absolutePath) {
+        if (TextUtils.isEmpty(absolutePath)) {
+            return false;
+        }
+
+        try {
+            File file = new File(absolutePath);
+            if (file.exists()) {
+                return file.delete();
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     /**
      * 将指定的输入流作为一个文件，保存至指定路径
      * @param iss

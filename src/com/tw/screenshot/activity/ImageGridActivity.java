@@ -3,8 +3,8 @@ package com.tw.screenshot.activity;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +15,11 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.R;
@@ -28,11 +30,11 @@ import com.tw.screenshot.utils.FileUtil;
 public class ImageGridActivity extends SherlockFragmentActivity implements Callback {
 
     private String mPath;
-    private List<String> mImagePathList = new ArrayList<String>();
-    private HandlerThread mThread;
-    private ImageHandler mImageHandler;
+    private HandlerThread mHandlerThread;
+    private ImageHandler mWorkHandler;
     private Handler mUiHandler;
     private GridView mGridView;
+    private GridImageAdapter mAdapter;
 
     private enum SelfMessage {
         Show_Image_Grid
@@ -45,20 +47,21 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mGridView = (GridView) findViewById(R.id.gridview);
+        mAdapter = new GridImageAdapter(this);
         mPath = getIntent().getStringExtra("path");
         mUiHandler = new Handler(this);
-        mThread = new HandlerThread("ImageThread");
-        mThread.start();
-        mImageHandler = new ImageHandler(mThread.getLooper());
+        mHandlerThread = new HandlerThread("WorkThread");
+        mHandlerThread.start();
+        mWorkHandler = new ImageHandler(mHandlerThread.getLooper());
 
         mGridView.setFastScrollEnabled(true);
-        mImageHandler.obtainMessage(0, mPath).sendToTarget();
+        mWorkHandler.obtainMessage(0, mPath).sendToTarget();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mThread.getLooper().quit();
+        mHandlerThread.getLooper().quit();
     }
 
     @Override
@@ -74,6 +77,10 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
             finish();
             break;
         case R.id.action_delete:
+            if (mAdapter != null) {
+                mAdapter.setMultiChoiceEnabled(true);
+                startActionMode(new AnActionModeOfEpicProportions());
+            }
             break;
         }
         return true;
@@ -84,14 +91,20 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         SelfMessage selfMsg = SelfMessage.values()[msg.what];
         switch (selfMsg) {
         case Show_Image_Grid:
-            GridImageAdapter adapter = new GridImageAdapter(this);
-            adapter.addAll(mImagePathList);
-            mGridView.setAdapter(adapter);
+            @SuppressWarnings("unchecked")
+            ArrayList<String> imagePathList = (ArrayList<String>) msg.obj;
+            mAdapter = new GridImageAdapter(this);
+            mAdapter.addAll(imagePathList);
+            mGridView.setAdapter(mAdapter);
             mGridView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
-                    startImagePagerActivity(position);
+                    if (mAdapter != null && mAdapter.isMultiChoiceMode()) {
+                        mAdapter.toggleSelection(view, position);
+                    } else {
+                        startImagePagerActivity(position);
+                    }
                 }
             });
             break;
@@ -107,9 +120,10 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
     }
     
     private String[] getImageUrls() {
-        String[] imageUrls = new String[mImagePathList.size()];
-        for (int i=0; i<mImagePathList.size(); ++i) {
-            imageUrls[i] = Constant.FILE_SCHEME + mImagePathList.get(i);
+        ArrayList<String> imagePathList = mAdapter.getAllImagePath();
+        String[] imageUrls = new String[imagePathList.size()];
+        for (int i=0; i<imagePathList.size(); ++i) {
+            imageUrls[i] = Constant.FILE_SCHEME + imagePathList.get(i);
         }
         return imageUrls;
     }
@@ -134,13 +148,66 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 }
             });
             if (imageList != null) {
+                ArrayList<String> imagePathList = new ArrayList<String>();
                 for (String image : imageList) {
-                    mImagePathList.add(path + File.separator + image);
+                    imagePathList.add(path + File.separator + image);
                 }
-                mUiHandler.obtainMessage(SelfMessage.Show_Image_Grid.ordinal()).sendToTarget();
+                mUiHandler.obtainMessage(SelfMessage.Show_Image_Grid.ordinal(), imagePathList).sendToTarget();
             }
 
             return;
+        }
+    }
+    
+    private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            menu.add(Menu.NONE, R.id.action_delete, Menu.NONE, "Delete")
+                .setIcon(R.drawable.ic_delete)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            if (item.getItemId() == R.id.action_delete) {
+                final ArrayList<String> selections = mAdapter.getAllSelection();
+                if (selections.isEmpty()) {
+                    Toast.makeText(ImageGridActivity.this, getString(R.string.select_image_tips), Toast.LENGTH_SHORT).show();
+                } else {
+                    final ProgressDialog dialog = new ProgressDialog(ImageGridActivity.this);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage(getString(R.string.dialog_delete_msg));
+                    dialog.show();
+                    mWorkHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (String path : selections) {
+                                FileUtil.deleteFile(path);
+                            }
+                            mUiHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mAdapter.deleteImageList(selections);
+                                    dialog.dismiss();
+                                    mode.finish();
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mAdapter.setMultiChoiceEnabled(false);
         }
     }
 }

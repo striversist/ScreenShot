@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="120dip">
+    android:layout_height="120dip" >
 
     <ImageView
         android:id="@+id/image"
@@ -11,12 +11,27 @@
         android:contentDescription="@string/descr_image"
         android:scaleType="centerCrop" />
 
+    <ImageView
+        android:id="@+id/select_image"
+        style="@style/style_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/on_focus_checkbox"
+        android:contentDescription="@string/app_name"
+        android:gravity="center"
+        android:scaleType="center"
+        android:visibility="visible" />
+
     <ProgressBar
         android:id="@+id/progress"
+        style="@style/ProgressBarStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="false"
-        android:max="100"
         android:layout_gravity="bottom"
-        style="@style/ProgressBarStyle" />
+        android:indeterminate="false"
+        android:max="100" />
+
 </FrameLayout>

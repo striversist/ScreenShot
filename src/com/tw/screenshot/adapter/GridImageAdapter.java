@@ -25,8 +25,14 @@ public class GridImageAdapter extends BaseAdapter {
     private Context mContext;
     private ImageLoader mImageLoader;
     private DisplayImageOptions mOptions;
-    private List<String> mImagePathList = new ArrayList<String>();
+    private List<ImageItem> mImageItemList = new ArrayList<ImageItem>();
+    private boolean mMultiChoiceMode = false;
 
+    private class ImageItem {
+        String path = "";
+        boolean isSelected = false;
+    }
+    
     public GridImageAdapter(Context context) {
         assert (context != null);
         mContext = context;
@@ -40,16 +46,80 @@ public class GridImageAdapter extends BaseAdapter {
     }
 
     public void addAll(List<String> imagePathList) {
-        if (imagePathList != null) {
-            mImagePathList.clear();
-            mImagePathList.addAll(imagePathList);
-            notifyDataSetChanged();
+        if (imagePathList == null)
+            return;
+        
+        mImageItemList.clear();
+        for (String path : imagePathList) {
+            ImageItem item = new ImageItem();
+            item.path = path;
+            item.isSelected = false;
+            mImageItemList.add(item);
         }
+        notifyDataSetChanged();
+    }
+    
+    public void setMultiChoiceEnabled(boolean enable) {
+        mMultiChoiceMode = enable;
+        notifyDataSetChanged();
+    }
+    
+    public boolean isMultiChoiceMode() {
+        return mMultiChoiceMode;
+    }
+    
+    public void toggleSelection(View view, int position) {
+        ViewHolder holder = (ViewHolder) view.getTag();
+        if (mImageItemList.get(position).isSelected) {
+            mImageItemList.get(position).isSelected = false;
+        } else {
+            mImageItemList.get(position).isSelected = true;
+        }
+        holder.selectImage.setSelected(mImageItemList.get(position).isSelected);
+    }
+    
+    public ArrayList<String> getAllSelection() {
+        ArrayList<String> result = new ArrayList<String>();
+        for (ImageItem item : mImageItemList) {
+            if (item.isSelected) {
+                result.add(item.path);
+            }
+        }
+        return result;
+    }
+    
+    public void clearAllSelection() {
+        for (ImageItem item : mImageItemList) {
+            item.isSelected = false;
+        }
+        notifyDataSetChanged();
+    }
+    
+    public void deleteImageList(ArrayList<String> imageList) {
+        if (imageList == null || imageList.isEmpty())
+            return;
+        ArrayList<ImageItem> imageItemList = new ArrayList<ImageItem>();
+        for (ImageItem item : mImageItemList) {
+            if (imageList.contains(item.path))
+                continue;
+            imageItemList.add(item);
+        }
+        mImageItemList.clear();
+        mImageItemList.addAll(imageItemList);
+        clearAllSelection();
+    }
+    
+    public ArrayList<String> getAllImagePath() {
+        ArrayList<String> allImagePath = new ArrayList<String>();
+        for (ImageItem item : mImageItemList) {
+            allImagePath.add(item.path);
+        }
+        return allImagePath;
     }
 
     @Override
     public int getCount() {
-        return mImagePathList.size();
+        return mImageItemList.size();
     }
 
     @Override
@@ -72,13 +142,14 @@ public class GridImageAdapter extends BaseAdapter {
             holder = new ViewHolder();
             assert view != null;
             holder.imageView = (ImageView) view.findViewById(R.id.image);
+            holder.selectImage = (ImageView) view.findViewById(R.id.select_image);
             holder.progressBar = (ProgressBar) view.findViewById(R.id.progress);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        String imageUrl = Constant.FILE_SCHEME + mImagePathList.get(position);
+        String imageUrl = Constant.FILE_SCHEME + mImageItemList.get(position).path;
         mImageLoader.displayImage(imageUrl, holder.imageView, mOptions,
                 new SimpleImageLoadingListener() {
                     @Override
@@ -107,11 +178,19 @@ public class GridImageAdapter extends BaseAdapter {
                     }
                 });
 
+        if (mMultiChoiceMode) {
+            holder.selectImage.setSelected(mImageItemList.get(position).isSelected);
+            holder.selectImage.setVisibility(View.VISIBLE);
+        } else {
+            holder.selectImage.setVisibility(View.GONE);
+        }
+        
         return view;
     }
 
     class ViewHolder {
         ImageView imageView;
+        ImageView selectImage;
         ProgressBar progressBar;
     }
 }

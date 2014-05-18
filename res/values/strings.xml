@@ -28,6 +28,8 @@
     <string name="title_list_delay">屏幕截图延时</string>
     <string name="dialog_title_delay">请选择截图延时时间</string>
     <string name="default_delay_value">5</string>
+    <string name="select_image_tips">请选择要删除的图片</string>
+    <string name="dialog_delete_msg">删除中，请稍后...</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>
