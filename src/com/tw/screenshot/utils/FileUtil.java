@@ -88,6 +88,34 @@ public class FileUtil {
     }
     
     /**
+     * 递归删除
+     * @param file
+     */
+    public void deleteFile(File file) {
+        if (file == null)
+            return;
+        
+        if (!file.exists()) {
+            return;
+        }
+        
+        if (file.isFile()) {
+            if (!file.delete()) {   // 删除文件失败
+            }
+        } else if (file.isDirectory()) {
+            File files[] = file.listFiles();
+            if (files != null) {
+                for (int i=0; i<files.length; i++) {
+                    this.deleteFile(files[i]);
+                }
+            }
+            
+            if (!file.delete()) {   // 删除空文件夹失败
+            }
+        }
+    }
+    
+    /**
      * 将指定的输入流作为一个文件，保存至指定路径
      * @param iss
      * @param outPath
