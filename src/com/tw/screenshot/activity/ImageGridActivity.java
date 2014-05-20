@@ -3,6 +3,7 @@ package com.tw.screenshot.activity;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -184,6 +185,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 for (String image : imageList) {
                     imagePathList.add(path + File.separator + image);
                 }
+                Collections.reverse(imagePathList); // 最新的排在最前面
                 mUiHandler.obtainMessage(SelfMessage.Show_Image_Grid.ordinal(), imagePathList).sendToTarget();
             }
 
