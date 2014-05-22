@@ -44,6 +44,7 @@ import com.viewpagerindicator.TabPageIndicator;
 public class MainActivity extends SherlockFragmentActivity implements Callback, OnStartListener {
     private static final String TAG = "MainActivity";
     private static final int NOTIFICATION_ID = 1;
+    private static final String KEY_FROM_NOTIFICATION = "key_from_notification";
     private ViewPager mPager;
     private MainFragmentAdapter mPagerAdapter;
     private PageIndicator mIndicator;
@@ -66,7 +67,6 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setOnStartListener(this);
-        
         homeFragment.setOnCheckedChangeListener(new OnCheckedChangeListener() { 
             @Override
             public void onCheckedChanged(CheckBox checkBox, boolean isChecked) {
@@ -80,8 +80,10 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             }
         });
         
+        HistoryFragment historyFragment = new HistoryFragment();
+        
         mPagerAdapter.addFragment(homeFragment, "首页");
-        mPagerAdapter.addFragment(new HistoryFragment(), "截图");
+        mPagerAdapter.addFragment(historyFragment, "截图");
         mPagerAdapter.addFragment(new HomeFragment(), "推荐");
         
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -96,6 +98,11 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         
         startRootService();
         checkHasRootAccess();
+        
+        if (getIntent().getBooleanExtra(KEY_FROM_NOTIFICATION, false)) {
+            mPager.setCurrentItem(1);
+            historyFragment.enterLastHistoryEntryAfterResume();
+        }
     }
     
     @Override
@@ -191,6 +198,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 .setOngoing(true);
         
         Intent resultIntent = new Intent(this, MainActivity.class);
+        resultIntent.putExtra(KEY_FROM_NOTIFICATION, true);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);

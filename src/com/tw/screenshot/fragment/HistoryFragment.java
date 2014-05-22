@@ -2,10 +2,13 @@ package com.tw.screenshot.fragment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +27,11 @@ import com.tw.screenshot.manager.AppEngine;
 
 public class HistoryFragment extends SherlockFragment {
     
+    private static final String TAG = "HistoryFragment";
     private ListView mListView;
     private TextView mInfoTextView;
     private HistoryListAdapter mListAdapter;
+    private boolean mEnterLastHistoryEntry = false;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,9 +51,7 @@ public class HistoryFragment extends SherlockFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
-                Intent intent = new Intent(getActivity(), ImageGridActivity.class);
-                intent.putExtra("path", item.path);
-                startActivity(intent);
+                startImageGridActivity(item.path);
             }
         });
         
@@ -60,6 +63,7 @@ public class HistoryFragment extends SherlockFragment {
         super.onResume();
         
         List<File> folderList = AppEngine.getInstance().getHistoryManager().getHistoryFolderList();
+        Collections.reverse(folderList);    // 反序，最新的在最前面
         List<HistoryItem> itemList = new ArrayList<HistoryItem>(folderList.size());
         for (File folder : folderList) {
             HistoryItem item = new HistoryItem();
@@ -67,6 +71,7 @@ public class HistoryFragment extends SherlockFragment {
             item.description = folder.getAbsolutePath();
             item.path = folder.getAbsolutePath();
             itemList.add(item);
+            Log.d(TAG, "onResume: path=" + item.path);
         }
         mListAdapter.setItemList(itemList);
         if (itemList.isEmpty()) {
@@ -76,6 +81,23 @@ public class HistoryFragment extends SherlockFragment {
             mListView.setVisibility(View.VISIBLE);
             mInfoTextView.setVisibility(View.GONE);
         }
+        
+        if (mEnterLastHistoryEntry && !itemList.isEmpty()) {
+            startImageGridActivity(itemList.get(0).path);
+            mEnterLastHistoryEntry = false;
+        }
+    }
+    
+    public void enterLastHistoryEntryAfterResume() {
+        mEnterLastHistoryEntry = true;
+    }
+    
+    private void startImageGridActivity(String path) {
+        if (TextUtils.isEmpty(path))
+            return;
+        Intent intent = new Intent(getActivity(), ImageGridActivity.class);
+        intent.putExtra("path", path);
+        startActivity(intent);
     }
 
 }

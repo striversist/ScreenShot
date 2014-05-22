@@ -5,16 +5,15 @@ import java.io.FilenameFilter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import android.content.Context;
+import android.os.Environment;
 
 import com.tw.screenshot.R;
 import com.tw.screenshot.data.Constant;
 import com.tw.screenshot.utils.FileUtil;
-
-import android.content.Context;
-import android.os.Environment;
 
 public class HistoryManager {
     
@@ -62,7 +61,6 @@ public class HistoryManager {
             for (File folder : folderList) {
                 mFolderList.add(folder);
             }
-            Collections.reverse(mFolderList);
         }
     }
 }
