@@ -34,6 +34,7 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_pager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("");
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null)
