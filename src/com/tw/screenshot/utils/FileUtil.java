@@ -91,7 +91,7 @@ public class FileUtil {
      * 递归删除
      * @param file
      */
-    public void deleteFile(File file) {
+    public static void deleteFiles(File file) {
         if (file == null)
             return;
         
@@ -106,7 +106,7 @@ public class FileUtil {
             File files[] = file.listFiles();
             if (files != null) {
                 for (int i=0; i<files.length; i++) {
-                    this.deleteFile(files[i]);
+                    deleteFiles(files[i]);
                 }
             }
             

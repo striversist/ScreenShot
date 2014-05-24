@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +29,8 @@ import com.tw.screenshot.activity.ImageGridActivity;
 import com.tw.screenshot.adapter.HistoryListAdapter;
 import com.tw.screenshot.adapter.HistoryListAdapter.HistoryItem;
 import com.tw.screenshot.manager.AppEngine;
+import com.tw.screenshot.utils.DeviceUtil;
+import com.tw.screenshot.utils.FileUtil;
 
 public class HistoryFragment extends SherlockFragment {
     
@@ -52,6 +59,43 @@ public class HistoryFragment extends SherlockFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
                 startImageGridActivity(item.path);
+            }
+        });
+        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                DeviceUtil.vibrate(getActivity(), 100);
+                new AlertDialog.Builder(getActivity()).setTitle(R.string.dialog_title_delete_folder)
+                .setMessage(R.string.dialog_msg_delete_folder)
+                .setPositiveButton(R.string.dialog_positive_btn_text, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final HistoryItem item = (HistoryItem) mListAdapter.getItem(position);
+                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setMessage(getString(R.string.dialog_delete_msg));
+                        progressDialog.show();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                FileUtil.deleteFiles(new File(item.path));
+                                mListView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mListAdapter.removeItem(item);
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                            }
+                        }).start();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_negative_btn_text, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {      
+                    }
+                }).show();
+                return false;
             }
         });
         

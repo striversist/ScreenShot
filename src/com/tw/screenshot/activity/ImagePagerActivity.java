@@ -119,7 +119,6 @@ public class ImagePagerActivity extends SherlockFragmentActivity {
                 .setNegativeButton(R.string.dialog_negative_btn_text, new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
                     }
                 }).show();
             break;

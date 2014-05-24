@@ -125,7 +125,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view,
                         final int position, long id) {
-                    DeviceUtil.vibrate(getApplicationContext(), 200);
+                    DeviceUtil.vibrate(getApplicationContext(), 100);
                     AlertDialog.Builder builder = new AlertDialog.Builder(ImageGridActivity.this).setTitle(null);
                     builder.setItems(R.array.longclick_image_menu, new DialogInterface.OnClickListener() {
                         @Override

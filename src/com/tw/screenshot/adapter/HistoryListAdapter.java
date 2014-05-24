@@ -42,6 +42,13 @@ public class HistoryListAdapter extends BaseAdapter {
         mItemList.addAll(itemList);
         notifyDataSetChanged();
     }
+    
+    public void removeItem(HistoryItem item) {
+        if (mItemList.contains(item)) {
+            mItemList.remove(item);
+            notifyDataSetChanged();
+        }
+    }
 
     @Override
     public int getCount() {
