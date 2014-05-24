@@ -72,7 +72,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             public void onCheckedChanged(CheckBox checkBox, boolean isChecked) {
                 switch (checkBox.getId()) {
                     case R.id.shake_checkbox:
-                        SettingUtil.setShakeMode(getApplicationContext(), isChecked);
+                        enableShakeDetect(isChecked);
                         break;
                     default:
                         break;
@@ -323,14 +323,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
             return;
         }
-        
-        try {
-            mBackendService.sendRequest(RootService.RequestType.ShakeDetect.ordinal(), null, null);
-            SettingUtil.setScreenCaptureDetecting(getApplicationContext(), true);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
-        }
+        SettingUtil.setScreenCaptureDetecting(getApplicationContext(), true);
     }
     
     @Override
@@ -351,5 +344,17 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 mBackendService = IRootRequest.Stub.asInterface(service);
             }
         }, Context.BIND_AUTO_CREATE);
+    }
+    
+    private void enableShakeDetect(boolean enable) {
+        if (mBackendService == null)
+            return;
+        
+        SettingUtil.setShakeMode(getApplicationContext(), enable);
+        try {
+            mBackendService.sendRequest(RootService.RequestType.ShakeDetect.ordinal(), null, null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
