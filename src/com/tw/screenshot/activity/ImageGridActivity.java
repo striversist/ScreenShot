@@ -57,6 +57,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_grid);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getIntent().getStringExtra("title"));
 
         mGridView = (GridView) findViewById(R.id.gridview);
         mAdapter = new GridImageAdapter(this);

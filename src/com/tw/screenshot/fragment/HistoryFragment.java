@@ -58,7 +58,7 @@ public class HistoryFragment extends SherlockFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
-                startImageGridActivity(item.path);
+                startImageGridActivity(item.title, item.path);
             }
         });
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -127,7 +127,7 @@ public class HistoryFragment extends SherlockFragment {
         }
         
         if (mEnterLastHistoryEntry && !itemList.isEmpty()) {
-            startImageGridActivity(itemList.get(0).path);
+            startImageGridActivity(itemList.get(0).title, itemList.get(0).path);
             mEnterLastHistoryEntry = false;
         }
     }
@@ -136,10 +136,11 @@ public class HistoryFragment extends SherlockFragment {
         mEnterLastHistoryEntry = true;
     }
     
-    private void startImageGridActivity(String path) {
+    private void startImageGridActivity(String title, String path) {
         if (TextUtils.isEmpty(path))
             return;
         Intent intent = new Intent(getActivity(), ImageGridActivity.class);
+        intent.putExtra("title", title);
         intent.putExtra("path", path);
         startActivity(intent);
     }
