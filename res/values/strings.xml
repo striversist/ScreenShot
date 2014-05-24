@@ -16,6 +16,7 @@
     <string name="title_activity_setting">SettingActivity</string>
     <string name="title_activity_imagegrid">SettingActivity</string>
     <string name="click_me_start">点击我启动</string>
+    <string name="click_me_stop">点击我停止</string>
     <string name="start">启动</string>
     <string name="enter_main_page">进入主界面</string>
     <string name="no_data">没有数据</string>

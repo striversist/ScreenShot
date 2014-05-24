@@ -155,7 +155,11 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            finish(false);
+            if (SettingUtil.isScreenCaptureDetecting(getApplicationContext())) {
+                finish(false);
+            } else {
+                finish(true);
+            }
         }
         return super.dispatchKeyEvent(event);
     }
@@ -322,10 +326,16 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         
         try {
             mBackendService.sendRequest(RootService.RequestType.ShakeDetect.ordinal(), null, null);
+            SettingUtil.setScreenCaptureDetecting(getApplicationContext(), true);
         } catch (RemoteException e) {
             e.printStackTrace();
             Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
         }
+    }
+    
+    @Override
+    public void onStoping() {
+        SettingUtil.setScreenCaptureDetecting(getApplicationContext(), false);
     }
     
     private void startRootService() {

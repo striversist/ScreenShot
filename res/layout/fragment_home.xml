@@ -20,7 +20,7 @@
         android:layout_marginBottom="50dip"
         android:layout_marginTop="30.0dip" >
 
-        <Button
+        <ToggleButton
             android:id="@+id/start_btn"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -28,10 +28,11 @@
             android:paddingBottom="15.0dip"
             android:text="@string/start"
             android:textColor="@color/white"
-            android:textSize="22.0dip" />
+            android:textSize="22.0dip"
+            style="@style/Toggle.Bug.Home" />
 
         <TextView
-            android:id="@+id/text_tips"
+            android:id="@+id/tips_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"

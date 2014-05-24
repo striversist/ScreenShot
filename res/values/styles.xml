@@ -51,4 +51,10 @@
         <item name="android:drawablePadding">6sp</item>
     </style>
     <style name="ProgressBarStyle" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal"/>
+    <style name="Toggle.Bug.Home" parent="@android:style/Widget">
+        <item name="android:disabledAlpha">?android:disabledAlpha</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textOn">停止</item>
+        <item name="android:textOff">启动</item>
+    </style>
 </resources>
