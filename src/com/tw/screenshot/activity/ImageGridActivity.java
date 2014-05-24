@@ -38,6 +38,7 @@ import com.tw.screenshot.utils.FileUtil;
 public class ImageGridActivity extends SherlockFragmentActivity implements Callback {
 
     private static final int RequestCode = 100;
+    private static final int SuperCardShowThreshold = 50;
     private String mPath;
     private HandlerThread mHandlerThread;
     private ImageHandler mWorkHandler;
@@ -47,7 +48,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
     private SuperCardToast mSuperCardToast;
 
     private enum SelfMessage {
-        Show_Image_Grid
+        Show_Image_Grid, Show_SuperCardToast
     }
 
     @Override
@@ -66,8 +67,6 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         mSuperCardToast = new SuperCardToast(this, SuperToast.Type.PROGRESS);
 
         mSuperCardToast.setText(getString(R.string.loading_data));
-        mSuperCardToast.setDuration(SuperToast.Duration.VERY_SHORT);
-        mSuperCardToast.show();
         mGridView.setFastScrollEnabled(true);
         mWorkHandler.obtainMessage(0, mPath).sendToTarget();
     }
@@ -137,6 +136,10 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 }
             });
             break;
+        case Show_SuperCardToast:
+            mSuperCardToast.setDuration(SuperToast.Duration.VERY_SHORT);
+            mSuperCardToast.show();
+            break;
         }
         return false;
     }
@@ -192,12 +195,19 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 for (String image : imageList) {
                     imagePathList.add(path + File.separator + image);
                 }
+                if (imageList.length >= SuperCardShowThreshold) {
+                    showSuperCardToastOnUi();
+                }
                 Collections.reverse(imagePathList); // 最新的排在最前面
                 mUiHandler.obtainMessage(SelfMessage.Show_Image_Grid.ordinal(), imagePathList).sendToTarget();
             }
 
             return;
         }
+    }
+    
+    private void showSuperCardToastOnUi() {
+        mUiHandler.obtainMessage(SelfMessage.Show_SuperCardToast.ordinal()).sendToTarget();
     }
     
     private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
