@@ -27,6 +27,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.johnpersano.supertoasts.SuperCardToast;
+import com.github.johnpersano.supertoasts.SuperToast;
 import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.GridImageAdapter;
 import com.tw.screenshot.data.Constant;
@@ -42,6 +44,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
     private Handler mUiHandler;
     private GridView mGridView;
     private GridImageAdapter mAdapter;
+    private SuperCardToast mSuperCardToast;
 
     private enum SelfMessage {
         Show_Image_Grid
@@ -60,7 +63,11 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
         mHandlerThread = new HandlerThread("WorkThread");
         mHandlerThread.start();
         mWorkHandler = new ImageHandler(mHandlerThread.getLooper());
+        mSuperCardToast = new SuperCardToast(this, SuperToast.Type.PROGRESS);
 
+        mSuperCardToast.setText(getString(R.string.loading_data));
+        mSuperCardToast.setDuration(SuperToast.Duration.VERY_SHORT);
+        mSuperCardToast.show();
         mGridView.setFastScrollEnabled(true);
         mWorkHandler.obtainMessage(0, mPath).sendToTarget();
     }
