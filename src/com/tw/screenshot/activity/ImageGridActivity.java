@@ -16,6 +16,7 @@ import android.os.Handler.Callback;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -91,7 +92,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
             break;
         case R.id.action_delete:
             if (mAdapter != null) {
-                mAdapter.setMultiChoiceEnabled(true);
+                mAdapter.setChoosable(true);
                 startActionMode(new AnActionModeOfEpicProportions());
             }
             break;
@@ -113,7 +114,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
-                    if (mAdapter != null && mAdapter.isMultiChoiceMode()) {
+                    if (mAdapter != null && mAdapter.isChoosable()) {
                         mAdapter.toggleSelection(view, position);
                     } else {
                         startImagePagerActivity(position);
@@ -213,7 +214,9 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
     private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            menu.add(Menu.NONE, R.id.action_delete, Menu.NONE, "Delete")
+            menu.add(R.string.settings_select_all)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            menu.add(R.string.settings_delete)
                 .setIcon(R.drawable.ic_delete)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             return true;
@@ -226,7 +229,7 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
 
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-            if (item.getItemId() == R.id.action_delete) {
+            if (TextUtils.equals(item.getTitle(), getString(R.string.settings_delete))) {
                 final ArrayList<String> selections = mAdapter.getAllSelection();
                 if (selections.isEmpty()) {
                     Toast.makeText(ImageGridActivity.this, getString(R.string.select_image_tips), Toast.LENGTH_SHORT).show();
@@ -252,13 +255,15 @@ public class ImageGridActivity extends SherlockFragmentActivity implements Callb
                         }
                     });
                 }
+            } else if (TextUtils.equals(item.getTitle(), getString(R.string.settings_select_all))) {
+                mAdapter.selectAll();
             }
             return true;
         }
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            mAdapter.setMultiChoiceEnabled(false);
+            mAdapter.setChoosable(false);
         }
     }
 }

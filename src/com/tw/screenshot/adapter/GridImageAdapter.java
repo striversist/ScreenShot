@@ -26,7 +26,7 @@ public class GridImageAdapter extends BaseAdapter {
     private ImageLoader mImageLoader;
     private DisplayImageOptions mOptions;
     private List<ImageItem> mImageItemList = new ArrayList<ImageItem>();
-    private boolean mMultiChoiceMode = false;
+    private boolean mChoosable = false;
 
     private class ImageItem {
         String path = "";
@@ -59,13 +59,17 @@ public class GridImageAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
     
-    public void setMultiChoiceEnabled(boolean enable) {
-        mMultiChoiceMode = enable;
+    /**
+     * 是否在图片上显示选择框
+     * @param enable
+     */
+    public void setChoosable(boolean enable) {
+        mChoosable = enable;
         notifyDataSetChanged();
     }
     
-    public boolean isMultiChoiceMode() {
-        return mMultiChoiceMode;
+    public boolean isChoosable() {
+        return mChoosable;
     }
     
     public void toggleSelection(View view, int position) {
@@ -76,6 +80,13 @@ public class GridImageAdapter extends BaseAdapter {
             mImageItemList.get(position).isSelected = true;
         }
         holder.selectImage.setSelected(mImageItemList.get(position).isSelected);
+    }
+    
+    public void selectAll() {
+        for (ImageItem imageItem : mImageItemList) {
+            imageItem.isSelected = true;
+        }
+        notifyDataSetChanged();
     }
     
     public ArrayList<String> getAllSelection() {
@@ -182,7 +193,7 @@ public class GridImageAdapter extends BaseAdapter {
                     }
                 });
 
-        if (mMultiChoiceMode) {
+        if (mChoosable) {
             holder.selectImage.setSelected(mImageItemList.get(position).isSelected);
             holder.selectImage.setVisibility(View.VISIBLE);
         } else {
