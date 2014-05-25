@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +18,19 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import cn.waps.AdInfo;
 import cn.waps.AppConnect;
 import cn.waps.SDKUtils;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.tw.screenshot.R;
 import com.tw.screenshot.component.AppItemView;
 
 public class AdFragment extends SherlockFragment {
 
     private Handler mHandler;
+    private LinearLayout mLayout;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,28 +47,10 @@ public class AdFragment extends SherlockFragment {
         // 对手机进行屏幕判断
         int displaySize = SDKUtils.getDisplaySize(context);
         // 整体布局
-        LinearLayout layout = new LinearLayout(context);
-        layout.setBackgroundColor(Color.WHITE);
+        mLayout = new LinearLayout(context);
+        mLayout.setBackgroundColor(getResources().getColor(R.color.background));
         try {
-            layout.setOrientation(LinearLayout.VERTICAL);
-            
-            RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-            params1.addRule(RelativeLayout.CENTER_IN_PARENT);
-            
-            RelativeLayout.LayoutParams params2 = null;
-            if(displaySize == 320){
-                params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 36);
-            }else if(displaySize == 240){
-                params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 28);
-            }else if(displaySize == 720){
-                params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 80);
-            }else if(displaySize == 1080){
-                params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 120);
-            }else{
-                params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 60);
-            }
-            params2.addRule(RelativeLayout.CENTER_VERTICAL);
-            params2.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            mLayout.setOrientation(LinearLayout.VERTICAL);
             
             ListView listView = new ListView(context);
             listView.setBackgroundColor(Color.WHITE);
@@ -84,12 +68,15 @@ public class AdFragment extends SherlockFragment {
             // 异步加载自定义广告数据
             new GetDiyAdTask(context, listView).execute();
             
-            layout.addView(listView);
+            View loadingLayout = LayoutInflater.from(context).inflate(R.layout.fragment_ad, null);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            layoutParams.gravity = Gravity.CENTER;
+            mLayout.addView(loadingLayout, layoutParams);
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        return layout;
+        return mLayout;
     }
     
     private class MyAdapter extends BaseAdapter{
@@ -171,6 +158,8 @@ public class AdFragment extends SherlockFragment {
                             @Override
                             public void run() {
                                 listView.setAdapter(new MyAdapter(context, list));
+                                mLayout.removeAllViews();
+                                mLayout.addView(listView);
                             }
                         }); 
                         
