@@ -24,6 +24,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import cn.waps.AppConnect;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -157,6 +159,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.action_feedback:
+                AppConnect.getInstance(this).showFeedback(this);
                 break;
             case R.id.action_about:
                 break;

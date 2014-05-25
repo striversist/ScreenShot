@@ -42,6 +42,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
         return super.onOptionsItemSelected(menuItem);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (TextUtils.equals(key, KEY_SEEKBAR_PREFERENCE)) {
