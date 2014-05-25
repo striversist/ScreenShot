@@ -29,6 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tw.screenshot.R;
 import com.tw.screenshot.adapter.MainFragmentAdapter;
+import com.tw.screenshot.fragment.AdFragment;
 import com.tw.screenshot.fragment.HistoryFragment;
 import com.tw.screenshot.fragment.HomeFragment;
 import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
@@ -81,10 +82,11 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         });
         
         HistoryFragment historyFragment = new HistoryFragment();
+        AdFragment adFragment = new AdFragment();
         
         mPagerAdapter.addFragment(homeFragment, "首页");
         mPagerAdapter.addFragment(historyFragment, "截图");
-        mPagerAdapter.addFragment(new HomeFragment(), "推荐");
+        mPagerAdapter.addFragment(adFragment, "推荐");
         
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -103,6 +105,13 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             mPager.setCurrentItem(1);
             historyFragment.enterLastHistoryEntryAfterResume();
         }
+        
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AppEngine.getInstance().getAdManager().init(MainActivity.this);
+            }
+        }, 500);
     }
     
     @Override
