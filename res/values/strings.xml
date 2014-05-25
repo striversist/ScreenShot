@@ -38,12 +38,18 @@
     <string name="dialog_negative_btn_text">取消</string>
     <string name="dialog_title_delete_folder">删除文件夹</string>
     <string name="dialog_msg_delete_folder">确定要删除该文件夹吗？</string>
+    <string name="dialog_title_prompt">提示</string>
     <string name="share">分享</string>
     <string name="please_choose">请选择</string>
     <string name="action_bar_share_with">分享...</string>
     <string name="loading_data">正在加载数据...</string>
     <string name="loading">加载中...</string>
     <string name="delete">删除</string>
+    <string name="home_page">首页</string>
+    <string name="screencap">截图</string>
+    <string name="recommend">推荐</string>
+    <string name="quit_comfirm">亲，确定要退出吗？</string>
+    <string name="start_failed">启动失败</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>

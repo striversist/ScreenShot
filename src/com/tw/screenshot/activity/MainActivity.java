@@ -84,9 +84,9 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         HistoryFragment historyFragment = new HistoryFragment();
         AdFragment adFragment = new AdFragment();
         
-        mPagerAdapter.addFragment(homeFragment, "首页");
-        mPagerAdapter.addFragment(historyFragment, "截图");
-        mPagerAdapter.addFragment(adFragment, "推荐");
+        mPagerAdapter.addFragment(homeFragment, getString(R.string.home_page));
+        mPagerAdapter.addFragment(historyFragment, getString(R.string.screencap));
+        mPagerAdapter.addFragment(adFragment, getString(R.string.recommend));
         
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -178,7 +178,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             startNotification();
             finish();
         } else {
-            new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，确定要退出吗？")
+            new AlertDialog.Builder(this).setTitle("提示").setMessage(getString(R.string.quit_comfirm))
                 .setPositiveButton("是的", new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -287,8 +287,8 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 Boolean checkRootResult = (Boolean) msg.obj;
                 if (checkRootResult) {
                     if (SettingUtil.isAppFirstBoot(getApplicationContext())) {
-                        new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，检测到您的手机已经root\n接下来请您授权本软件\n（否则将无法截屏哦）")
-                        .setPositiveButton("确定", new OnClickListener() {
+                        new AlertDialog.Builder(this).setTitle(R.string.dialog_title_prompt).setMessage("亲，检测到您的手机已经root\n接下来请您授权本软件\n（否则将无法截屏哦）")
+                        .setPositiveButton(R.string.dialog_positive_btn_text, new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -299,8 +299,8 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                         getRootAccess();
                     }
                 } else {
-                    new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，您的手机没有root权限，将无法截屏")
-                    .setPositiveButton("确定", new OnClickListener() {
+                    new AlertDialog.Builder(this).setTitle(R.string.dialog_title_prompt).setMessage("亲，您的手机没有root权限，将无法截屏")
+                    .setPositiveButton(R.string.dialog_positive_btn_text, new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -311,8 +311,8 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             case GetRootResult:
                 Boolean getRootResult = (Boolean) msg.obj;
                 if (!getRootResult) {
-                    new AlertDialog.Builder(this).setTitle("提示").setMessage("亲，您拒绝了授权，将无法截屏")
-                    .setPositiveButton("确定", new OnClickListener() {
+                    new AlertDialog.Builder(this).setTitle(R.string.dialog_title_prompt).setMessage("亲，您拒绝了授权，将无法截屏")
+                    .setPositiveButton(R.string.dialog_positive_btn_text, new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -329,7 +329,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     public void onStarting() {
         finish(false);
         if (mBackendService == null) {
-            Toast.makeText(this, "启动失败", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.start_failed, Toast.LENGTH_LONG).show();
             return;
         }
         SettingUtil.setScreenCaptureDetecting(getApplicationContext(), true);
