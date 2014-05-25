@@ -156,8 +156,6 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
-            case R.id.action_help:
-                break;
             case R.id.action_feedback:
                 break;
             case R.id.action_about:
