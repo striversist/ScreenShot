@@ -164,6 +164,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     
     private void finish(boolean reallyQuit) {
         if (!reallyQuit) {
+            // 此时肯定处于“开启”状态
             startNotification();
             finish();
         } else {
@@ -323,6 +324,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     
     @Override
     public void onDetectStopped() {
+        // 停止所有截屏监控
         sendRequestShakeDetect(false);
         setAllModeEnabled(true);
     }

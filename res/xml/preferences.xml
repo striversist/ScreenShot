@@ -24,26 +24,26 @@
         android:key="shake"
         android:title="@string/shake" >
         <com.tw.screenshot.component.SeekBarPreference
-            android:defaultValue="30"
-            android:dialogTitle="@string/shake_sensitivity"
-            android:key="seekbar_preference"
+            android:key="shake_strength_preference"
+            android:defaultValue="50"
+            android:dialogTitle="@string/shake_strength"
             android:summary="@string/shake_prefer_summary"
-            android:title="@string/shake_sensitivity"
-            example:maxValue="100"
-            example:minValue="1" />
+            android:title="@string/shake_strength"
+            example:maxValue="@string/shake_sensitivity_max_value"
+            example:minValue="@string/shake_sensitivity_min_value" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/vibrate" >
         <CheckBoxPreference
-            android:defaultValue="true"
             android:key="vibrate_preference"
+            android:defaultValue="true"
             android:title="@string/title_vibrate" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/title_delay" >
         <ListPreference
+            android:key="delay_preference"
             android:dialogTitle="@string/dialog_title_delay"
             android:entries="@array/entries_list_delay"
             android:entryValues="@array/entryvalues_list_delay"
-            android:key="delay_preference"
             android:title="@string/title_list_delay"
             android:defaultValue="@string/default_delay_value" />
     </PreferenceCategory>

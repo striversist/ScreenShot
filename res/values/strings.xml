@@ -23,8 +23,8 @@
     <string name="no_data">没有数据</string>
     <string name="descr_image">Image</string>
     <string name="shake">摇晃</string>
-    <string name="shake_sensitivity">摇晃敏感度</string>
-    <string name="shake_prefer_summary">设置摇一摇截图的敏感度</string>
+    <string name="shake_strength">摇晃强度</string>
+    <string name="shake_prefer_summary">数值越大越需用力</string>
     <string name="vibrate">震动</string>
     <string name="title_vibrate">截图时震动</string>
     <string name="title_delay">延时</string>
@@ -54,35 +54,8 @@
     <string name="prompt_shake_mode_opened">摇一摇模式开启</string>
     <string name="prompt_shake_mode_closed">摇一摇模式关闭</string>
     <string name="prompt_at_least_choose_one_mode">请至少选择一种截图模式</string>
-    
-    <string name="inline_preferences">In-line preferences</string>
-    <string name="dialog_based_preferences">Dialog-based preferences</string>
-    <string name="launch_preferences">Launch preferences</string>
-    <string name="preference_attributes">Preference attributes</string>
-    <string name="title_checkbox_preference">Checkbox preference</string>
-    <string name="summary_checkbox_preference">This is a checkbox</string>
-    <string name="title_edittext_preference">Edit text preference</string>
-    <string name="summary_edittext_preference">An example that uses an edit text dialog</string>
-    <string name="dialog_title_edittext_preference">Enter your favorite animal</string>
-    <string name="title_list_preference">List preference</string>
-    <string name="summary_list_preference">An example that uses a list dialog</string>
-    <string name="dialog_title_list_preference">Choose one</string>
-    <string name="title_intent_preference">Intent preference</string>
-    <string name="summary_intent_preference">Launches an Activity from an Intent</string>
-    <string name="title_my_preference">My preference</string>
-    <string name="summary_my_preference">This is a custom counter preference</string>
-    <string name="title_advanced_toggle_preference">Haunted preference</string>
-    <string name="summary_on_advanced_toggle_preference">I\'m on! :)</string>
-    <string name="summary_off_advanced_toggle_preference">I\'m off! :(</string>
-    <string name="title_parent_preference">Parent checkbox preference</string>
-    <string name="summary_parent_preference">This is visually a parent</string>
-    <string name="title_child_preference">Child checkbox preference</string>
-    <string name="summary_child_preference">This is visually a child</string>
-    <string name="example_preference_dependency">Example preference dependency</string>
-    <string name="title_wifi">WiFi</string>
-    <string name="title_wifi_settings">WiFi settings</string>
-    <string name="default_value_list_preference">beta</string>
-    <string name="default_value_edittext_preference">Default value</string>
     <string name="title_activity_image_pager">ImagePagerActivity</string>
+    <string name="shake_sensitivity_max_value">100</string>
+    <string name="shake_sensitivity_min_value">1</string>
 
 </resources>

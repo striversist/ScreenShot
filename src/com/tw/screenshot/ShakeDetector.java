@@ -14,13 +14,15 @@ import android.util.Log;
  * 
  */
 public class ShakeDetector implements SensorEventListener {
-    public static final int DEFAULT_SHAKE_SENSITIVITY = 30;
+    public static final int MIN_SHAKE_SENSITIVITY = 1;
+    public static final int MAX_SHAKE_SENSITIVITY = 100;
+    public static final int DEFAULT_SHAKE_SENSITIVITY = MAX_SHAKE_SENSITIVITY / 2;
     // 检测的时间间隔
     private static final int UPDATE_INTERVAL = 100;
     // 最小摇晃阈值
     private static final int MIN_SHAKE_THRESHOLD = 100;
     private static final int DEFAULT_SHAKE_THREADHOLD = MIN_SHAKE_THRESHOLD * 10;
-    private static final int MAX_SHAKE_THRESHOLD = DEFAULT_SHAKE_THREADHOLD * 5;
+    private static final int MAX_SHAKE_THRESHOLD = DEFAULT_SHAKE_THREADHOLD * 4;
 
     private Context mContext;
     private SensorManager mSensorManager;
@@ -77,12 +79,15 @@ public class ShakeDetector implements SensorEventListener {
      * @return
      */
     public boolean setSensitivity(int value) {
-        if (value < 1 || value > 100)
-            return false;
+        if (value < MIN_SHAKE_SENSITIVITY) {
+            value = MIN_SHAKE_SENSITIVITY;
+        } else if (value > MAX_SHAKE_SENSITIVITY) {
+            value = MAX_SHAKE_SENSITIVITY;
+        }
 
         mShakeThreshold = new BigDecimal(
                 ((double) (MAX_SHAKE_THRESHOLD - MIN_SHAKE_THRESHOLD)) / 100
-                        * value).setScale(0, BigDecimal.ROUND_HALF_UP)
+                        * (MAX_SHAKE_SENSITIVITY - value)).setScale(0, BigDecimal.ROUND_HALF_UP)
                 .intValue(); // 四舍五入取整
         return true;
     }
