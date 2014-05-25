@@ -3,6 +3,7 @@ package com.tw.screenshot.fragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -107,7 +108,8 @@ public class HistoryFragment extends SherlockFragment {
         super.onResume();
         
         List<File> folderList = AppEngine.getInstance().getHistoryManager().getHistoryFolderList();
-        Collections.reverse(folderList);    // 反序，最新的在最前面
+        Collections.sort(folderList, new FileComparator()); // 正序：文件名从小到大
+        Collections.reverse(folderList);    // 反序：文件名从大到小
         List<HistoryItem> itemList = new ArrayList<HistoryItem>(folderList.size());
         for (File folder : folderList) {
             HistoryItem item = new HistoryItem();
@@ -143,6 +145,13 @@ public class HistoryFragment extends SherlockFragment {
         intent.putExtra("title", title);
         intent.putExtra("path", path);
         startActivity(intent);
+    }
+    
+    private class FileComparator implements Comparator<File> {
+        @Override
+        public int compare(File lhs, File rhs) {
+            return lhs.getAbsolutePath().compareTo(rhs.getAbsolutePath());
+        }
     }
 
 }
