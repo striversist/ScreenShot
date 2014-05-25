@@ -5,11 +5,12 @@ import org.jraf.android.backport.switchwidget.Switch;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.tw.screenshot.R;
@@ -18,15 +19,15 @@ import com.tw.screenshot.utils.SettingUtil;
 
 public class HomeFragment extends SherlockFragment {
     
-    private OnStartListener mOnStartListener;
+    private OnStartDetectListener mOnStartListener;
     private OnCheckedChangeListener mOnCheckedChangeListener;
-    private ToggleButton mStartButton;
+    private TextView    mStartTextView;
     private Switch      mSwitchWidget;
     private TextView    mTipsTextView;
     
-    public interface OnStartListener {
-        public void onStarting();
-        public void onStoping();
+    public interface OnStartDetectListener {
+        public void onStartDetect();
+        public void onStopDetect();
     }
     
     public interface OnCheckedChangeListener {
@@ -41,36 +42,20 @@ public class HomeFragment extends SherlockFragment {
     @Override
     public void onResume() {
         super.onResume();
-        changeStartButton(SettingUtil.isScreenCaptureDetecting(getActivity()));
+        changeStartStatus(!SettingUtil.isScreenCaptureDetecting(getActivity()));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_home, null);
-        mStartButton = (ToggleButton) layout.findViewById(R.id.start_btn);
+        mStartTextView = (TextView) layout.findViewById(R.id.start_tv);
         mSwitchWidget = (Switch) layout.findViewById(R.id.switch_widget);
         mTipsTextView = (TextView) layout.findViewById(R.id.tips_tv);
         
-        mStartButton.setChecked(SettingUtil.isScreenCaptureDetecting(getActivity()));
+        mSwitchWidget.setChecked(SettingUtil.getShakeMode(getActivity()));
         mSwitchWidget.setEnabled(!SettingUtil.isScreenCaptureDetecting(getActivity()));
-        
-        mStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    changeStartButton(true);
-                    if (mOnStartListener != null) {
-                        mOnStartListener.onStarting();
-                    }
-                } else {
-                    changeStartButton(false);
-                    if (mOnStartListener != null) {
-                        mOnStartListener.onStoping();
-                    }
-                }
-            }
-        });
+
         mSwitchWidget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -79,11 +64,31 @@ public class HomeFragment extends SherlockFragment {
                 }
             }
         });
+        mStartTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!checkStartAvailable()) {
+                    Toast.makeText(getActivity(), R.string.prompt_at_least_choose_one_mode, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                if (SettingUtil.isScreenCaptureDetecting(getActivity())) {
+                    if (mOnStartListener != null) {
+                        mOnStartListener.onStopDetect();
+                    }
+                } else {
+                    if (mOnStartListener != null) {
+                        mOnStartListener.onStartDetect();
+                    }
+                }
+                changeStartStatus(!SettingUtil.isScreenCaptureDetecting(getActivity()));
+            }
+        });
         
         return layout;
     }
     
-    public void setOnStartListener(OnStartListener listener) {
+    public void setOnStartListener(OnStartDetectListener listener) {
         if (listener != null) {
             mOnStartListener = listener;
         }
@@ -99,16 +104,26 @@ public class HomeFragment extends SherlockFragment {
         mSwitchWidget.setEnabled(enabled);
     }
     
-    private void changeStartButton(boolean isStart) {
+    private void changeStartStatus(boolean isStart) {
         if (isStart) {
-            mStartButton.setBackgroundResource(R.drawable.btn_style_red);
-            mStartButton.setPadding(0, 0, 0, DensityUtil.dip2px(getActivity(), 15.0F));
-            mTipsTextView.setText(R.string.click_me_stop);
-        } else {
-            mStartButton.setBackgroundResource(R.drawable.btn_style_blue);
-            mStartButton.setPadding(0, 0, 0, DensityUtil.dip2px(getActivity(), 15.0F));
+            mStartTextView.setText(R.string.start);
+            mStartTextView.setBackgroundResource(R.drawable.btn_style_blue);
+            mStartTextView.setPadding(0, 0, 0, DensityUtil.dip2px(getActivity(), 15.0F));
             mTipsTextView.setText(R.string.click_me_start);
+        } else {
+            mStartTextView.setText(R.string.stop);
+            mStartTextView.setBackgroundResource(R.drawable.btn_style_red);
+            mStartTextView.setPadding(0, 0, 0, DensityUtil.dip2px(getActivity(), 15.0F));
+            mTipsTextView.setText(R.string.click_me_stop);
         }
+    }
+    
+    /**
+     * 至少有一种模式isChecked
+     * @return
+     */
+    private boolean checkStartAvailable() {
+        return mSwitchWidget.isChecked();
     }
 
 }

@@ -18,6 +18,7 @@
     <string name="click_me_start">点击我启动</string>
     <string name="click_me_stop">点击我停止</string>
     <string name="start">启动</string>
+    <string name="stop">停止</string>
     <string name="enter_main_page">进入主界面</string>
     <string name="no_data">没有数据</string>
     <string name="descr_image">Image</string>
@@ -50,6 +51,9 @@
     <string name="recommend">推荐</string>
     <string name="quit_comfirm">亲，确定要退出吗？</string>
     <string name="start_failed">启动失败</string>
+    <string name="prompt_shake_mode_opened">摇一摇模式开启</string>
+    <string name="prompt_shake_mode_closed">摇一摇模式关闭</string>
+    <string name="prompt_at_least_choose_one_mode">请至少选择一种截图模式</string>
     
     <string name="inline_preferences">In-line preferences</string>
     <string name="dialog_based_preferences">Dialog-based preferences</string>

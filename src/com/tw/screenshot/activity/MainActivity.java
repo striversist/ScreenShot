@@ -33,7 +33,7 @@ import com.tw.screenshot.fragment.AdFragment;
 import com.tw.screenshot.fragment.HistoryFragment;
 import com.tw.screenshot.fragment.HomeFragment;
 import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
-import com.tw.screenshot.fragment.HomeFragment.OnStartListener;
+import com.tw.screenshot.fragment.HomeFragment.OnStartDetectListener;
 import com.tw.screenshot.manager.AppEngine;
 import com.tw.screenshot.service.CommandUtil;
 import com.tw.screenshot.service.IRootRequest;
@@ -42,7 +42,7 @@ import com.tw.screenshot.utils.SettingUtil;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 
-public class MainActivity extends SherlockFragmentActivity implements Callback, OnStartListener {
+public class MainActivity extends SherlockFragmentActivity implements Callback, OnStartDetectListener {
     private static final String TAG = "MainActivity";
     private static final int NOTIFICATION_ID = 1;
     private static final String KEY_FROM_NOTIFICATION = "key_from_notification";
@@ -77,6 +77,11 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 switch (view.getId()) {
                     case R.id.switch_widget:
                         enableShakeDetect(isChecked);
+                        if (isChecked) {
+                            Toast.makeText(getApplicationContext(), R.string.prompt_shake_mode_opened, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.prompt_shake_mode_closed, Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         break;
@@ -329,7 +334,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     }
 
     @Override
-    public void onStarting() {
+    public void onStartDetect() {
         finish(false);
         if (mBackendService == null) {
             Toast.makeText(this, R.string.start_failed, Toast.LENGTH_LONG).show();
@@ -340,7 +345,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     }
     
     @Override
-    public void onStoping() {
+    public void onStopDetect() {
         SettingUtil.setScreenCaptureDetecting(getApplicationContext(), false);
         setAllModeEnabled(true);
     }
