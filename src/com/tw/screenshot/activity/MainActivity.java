@@ -6,9 +6,9 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.ServiceConnection;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -21,7 +21,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.widget.CheckBox;
+import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -47,6 +47,9 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     private static final int NOTIFICATION_ID = 1;
     private static final String KEY_FROM_NOTIFICATION = "key_from_notification";
     private ViewPager mPager;
+    private HomeFragment mHomeFragment;
+    private HistoryFragment mHistoryFragment;
+    private AdFragment mAdFragment;
     private MainFragmentAdapter mPagerAdapter;
     private PageIndicator mIndicator;
     private boolean mShowNotification = false;
@@ -66,13 +69,13 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         AppEngine.getInstance().setAppContext(getApplicationContext());
         mPagerAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         
-        HomeFragment homeFragment = new HomeFragment();
-        homeFragment.setOnStartListener(this);
-        homeFragment.setOnCheckedChangeListener(new OnCheckedChangeListener() { 
+        mHomeFragment = new HomeFragment();
+        mHomeFragment.setOnStartListener(this);
+        mHomeFragment.setOnCheckedChangeListener(new OnCheckedChangeListener() { 
             @Override
-            public void onCheckedChanged(CheckBox checkBox, boolean isChecked) {
-                switch (checkBox.getId()) {
-                    case R.id.shake_checkbox:
+            public void onCheckedChanged(View view, boolean isChecked) {
+                switch (view.getId()) {
+                    case R.id.switch_widget:
                         enableShakeDetect(isChecked);
                         break;
                     default:
@@ -81,12 +84,12 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             }
         });
         
-        HistoryFragment historyFragment = new HistoryFragment();
-        AdFragment adFragment = new AdFragment();
+        mHistoryFragment = new HistoryFragment();
+        mAdFragment = new AdFragment();
         
-        mPagerAdapter.addFragment(homeFragment, getString(R.string.home_page));
-        mPagerAdapter.addFragment(historyFragment, getString(R.string.screencap));
-        mPagerAdapter.addFragment(adFragment, getString(R.string.recommend));
+        mPagerAdapter.addFragment(mHomeFragment, getString(R.string.home_page));
+        mPagerAdapter.addFragment(mHistoryFragment, getString(R.string.screencap));
+        mPagerAdapter.addFragment(mAdFragment, getString(R.string.recommend));
         
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -103,7 +106,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         
         if (getIntent().getBooleanExtra(KEY_FROM_NOTIFICATION, false)) {
             mPager.setCurrentItem(1);
-            historyFragment.enterLastHistoryEntryAfterResume();
+            mHistoryFragment.enterLastHistoryEntryAfterResume();
         }
         
         new Handler().postDelayed(new Runnable() {
@@ -333,11 +336,17 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             return;
         }
         SettingUtil.setScreenCaptureDetecting(getApplicationContext(), true);
+        setAllModeEnabled(false);
     }
     
     @Override
     public void onStoping() {
         SettingUtil.setScreenCaptureDetecting(getApplicationContext(), false);
+        setAllModeEnabled(true);
+    }
+    
+    private void setAllModeEnabled(boolean enable) {
+        mHomeFragment.setShakeModeEnabled(enable);
     }
     
     private void startRootService() {

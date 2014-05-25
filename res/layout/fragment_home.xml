@@ -3,14 +3,28 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/background" >
-
-    <CheckBox
-        android:id="@+id/shake_checkbox"
-        style="@style/style_checkbox"
+    
+    <LinearLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/mode_shake" />
+        android:orientation="horizontal" >
+    
+	    <TextView
+	        android:id="@+id/shake_tv" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="15dp"
+	        android:textSize="18sp"
+	        android:textColor="@color/dark_blue"
+	        android:text="@string/mode_shake" />
+	    
+	    <org.jraf.android.backport.switchwidget.Switch
+	        android:id="@+id/switch_widget"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+    
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="190.0dip"

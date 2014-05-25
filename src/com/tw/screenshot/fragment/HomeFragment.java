@@ -1,10 +1,11 @@
 package com.tw.screenshot.fragment;
 
+import org.jraf.android.backport.switchwidget.Switch;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class HomeFragment extends SherlockFragment {
     private OnStartListener mOnStartListener;
     private OnCheckedChangeListener mOnCheckedChangeListener;
     private ToggleButton mStartButton;
-    private CheckBox    mShakeCheckBox;
+    private Switch      mSwitchWidget;
     private TextView    mTipsTextView;
     
     public interface OnStartListener {
@@ -29,7 +30,7 @@ public class HomeFragment extends SherlockFragment {
     }
     
     public interface OnCheckedChangeListener {
-        public void onCheckedChanged(CheckBox checkBox, boolean isChecked);
+        public void onCheckedChanged(View view, boolean isChecked);
     }
     
     @Override
@@ -48,11 +49,11 @@ public class HomeFragment extends SherlockFragment {
         
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_home, null);
         mStartButton = (ToggleButton) layout.findViewById(R.id.start_btn);
-        mShakeCheckBox = (CheckBox) layout.findViewById(R.id.shake_checkbox);
+        mSwitchWidget = (Switch) layout.findViewById(R.id.switch_widget);
         mTipsTextView = (TextView) layout.findViewById(R.id.tips_tv);
         
-        mShakeCheckBox.setChecked(SettingUtil.getShakeMode(getActivity()));
-        mStartButton.setChecked(SettingUtil.isScreenCaptureDetecting(getActivity()));        
+        mStartButton.setChecked(SettingUtil.isScreenCaptureDetecting(getActivity()));
+        mSwitchWidget.setEnabled(!SettingUtil.isScreenCaptureDetecting(getActivity()));
         
         mStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -70,11 +71,11 @@ public class HomeFragment extends SherlockFragment {
                 }
             }
         });
-        mShakeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitchWidget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mOnCheckedChangeListener != null) {
-                    mOnCheckedChangeListener.onCheckedChanged((CheckBox) buttonView, isChecked);
+                    mOnCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
                 }
             }
         });
@@ -92,6 +93,10 @@ public class HomeFragment extends SherlockFragment {
         if (listener != null) {
             mOnCheckedChangeListener = listener;
         }
+    }
+    
+    public void setShakeModeEnabled(boolean enabled) {
+        mSwitchWidget.setEnabled(enabled);
     }
     
     private void changeStartButton(boolean isStart) {
