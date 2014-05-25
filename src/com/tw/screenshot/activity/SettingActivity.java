@@ -9,6 +9,7 @@ import com.tw.screenshot.utils.SettingUtil;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.text.TextUtils;
 
 public class SettingActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -26,6 +27,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        
+        ListPreference listPreference = (ListPreference) findPreference(KEY_DELAY_PREFERENCE);
+        listPreference.setSummary(listPreference.getEntry());
     }
     
     @Override
@@ -49,6 +53,8 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
         } else if (TextUtils.equals(key, KEY_DELAY_PREFERENCE)) {
             String delayTime = sharedPreferences.getString(key, getString(R.string.default_delay_value));
             SettingUtil.setDelayTime(getApplicationContext(), Integer.valueOf(delayTime));
+            ListPreference listPreference = (ListPreference) findPreference(key);
+            listPreference.setSummary(listPreference.getEntry());
         }
     }
 }
