@@ -23,7 +23,6 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
-
 import cn.waps.AppConnect;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -162,6 +161,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 AppConnect.getInstance(this).showFeedback(this);
                 break;
             case R.id.action_about:
+                showAbout();
                 break;
             case R.id.action_exit:
                 finish(true);
@@ -380,5 +380,22 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void showAbout() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_launcher)
+                .setTitle(getResources().getString(R.string.app_name))
+                .setMessage("作者：大眼牛工作室\n邮箱：bigeyecow@qq.com\n版权：©2014-2015")
+                .setPositiveButton(
+                        getResources().getString(
+                                R.string.dialog_positive_btn_text),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                            }
+                        }).create();
+        dialog.show();
     }
 }
