@@ -221,11 +221,11 @@ public class SettingUtil {
     
     // ------------------------------- 业务相关 ---------------------------------------
 
-    public static void setShakeMode(Context context, boolean mode) {
+    public static void setShakeModeChecked(Context context, boolean mode) {
         setBooleanPreferences(context, keyShakeMode, mode);
     }
 
-    public static boolean getShakeMode(Context context) {
+    public static boolean isShakeModeChecked(Context context) {
         return getBooleanPreferences(context, keyShakeMode, false);
     }
 

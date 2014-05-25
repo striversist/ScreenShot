@@ -19,15 +19,15 @@ import com.tw.screenshot.utils.SettingUtil;
 
 public class HomeFragment extends SherlockFragment {
     
-    private OnStartDetectListener mOnStartListener;
+    private OnDetectChangedListener mOnStartListener;
     private OnCheckedChangeListener mOnCheckedChangeListener;
     private TextView    mStartTextView;
     private Switch      mSwitchWidget;
     private TextView    mTipsTextView;
     
-    public interface OnStartDetectListener {
-        public void onStartDetect();
-        public void onStopDetect();
+    public interface OnDetectChangedListener {
+        public void onDetectStarted();
+        public void onDetectStopped();
     }
     
     public interface OnCheckedChangeListener {
@@ -53,12 +53,18 @@ public class HomeFragment extends SherlockFragment {
         mSwitchWidget = (Switch) layout.findViewById(R.id.switch_widget);
         mTipsTextView = (TextView) layout.findViewById(R.id.tips_tv);
         
-        mSwitchWidget.setChecked(SettingUtil.getShakeMode(getActivity()));
+        mSwitchWidget.setChecked(SettingUtil.isShakeModeChecked(getActivity()));
         mSwitchWidget.setEnabled(!SettingUtil.isScreenCaptureDetecting(getActivity()));
 
         mSwitchWidget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Toast.makeText(getActivity(), R.string.prompt_shake_mode_opened, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), R.string.prompt_shake_mode_closed, Toast.LENGTH_SHORT).show();
+                }
+                SettingUtil.setShakeModeChecked(getActivity(), isChecked);
                 if (mOnCheckedChangeListener != null) {
                     mOnCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
                 }
@@ -73,12 +79,14 @@ public class HomeFragment extends SherlockFragment {
                 }
                 
                 if (SettingUtil.isScreenCaptureDetecting(getActivity())) {
+                    SettingUtil.setScreenCaptureDetecting(getActivity(), false);
                     if (mOnStartListener != null) {
-                        mOnStartListener.onStopDetect();
+                        mOnStartListener.onDetectStopped();
                     }
                 } else {
+                    SettingUtil.setScreenCaptureDetecting(getActivity(), true);
                     if (mOnStartListener != null) {
-                        mOnStartListener.onStartDetect();
+                        mOnStartListener.onDetectStarted();
                     }
                 }
                 changeStartStatus(!SettingUtil.isScreenCaptureDetecting(getActivity()));
@@ -88,7 +96,7 @@ public class HomeFragment extends SherlockFragment {
         return layout;
     }
     
-    public void setOnStartListener(OnStartDetectListener listener) {
+    public void setOnStartListener(OnDetectChangedListener listener) {
         if (listener != null) {
             mOnStartListener = listener;
         }

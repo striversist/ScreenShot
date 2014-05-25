@@ -21,8 +21,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Toast;
 import cn.waps.AppConnect;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -33,8 +31,7 @@ import com.tw.screenshot.adapter.MainFragmentAdapter;
 import com.tw.screenshot.fragment.AdFragment;
 import com.tw.screenshot.fragment.HistoryFragment;
 import com.tw.screenshot.fragment.HomeFragment;
-import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
-import com.tw.screenshot.fragment.HomeFragment.OnStartDetectListener;
+import com.tw.screenshot.fragment.HomeFragment.OnDetectChangedListener;
 import com.tw.screenshot.manager.AppEngine;
 import com.tw.screenshot.service.CommandUtil;
 import com.tw.screenshot.service.IRootRequest;
@@ -43,7 +40,7 @@ import com.tw.screenshot.utils.SettingUtil;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 
-public class MainActivity extends SherlockFragmentActivity implements Callback, OnStartDetectListener {
+public class MainActivity extends SherlockFragmentActivity implements Callback, OnDetectChangedListener {
     private static final String TAG = "MainActivity";
     private static final int NOTIFICATION_ID = 1;
     private static final String KEY_FROM_NOTIFICATION = "key_from_notification";
@@ -72,23 +69,6 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         
         mHomeFragment = new HomeFragment();
         mHomeFragment.setOnStartListener(this);
-        mHomeFragment.setOnCheckedChangeListener(new OnCheckedChangeListener() { 
-            @Override
-            public void onCheckedChanged(View view, boolean isChecked) {
-                switch (view.getId()) {
-                    case R.id.switch_widget:
-                        enableShakeDetect(isChecked);
-                        if (isChecked) {
-                            Toast.makeText(getApplicationContext(), R.string.prompt_shake_mode_opened, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), R.string.prompt_shake_mode_closed, Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
         
         mHistoryFragment = new HistoryFragment();
         mAdFragment = new AdFragment();
@@ -335,19 +315,15 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     }
 
     @Override
-    public void onStartDetect() {
-        finish(false);
-        if (mBackendService == null) {
-            Toast.makeText(this, R.string.start_failed, Toast.LENGTH_LONG).show();
-            return;
-        }
-        SettingUtil.setScreenCaptureDetecting(getApplicationContext(), true);
+    public void onDetectStarted() {
+        sendRequestShakeDetect(SettingUtil.isShakeModeChecked(getApplicationContext()));
         setAllModeEnabled(false);
+        finish(false);
     }
     
     @Override
-    public void onStopDetect() {
-        SettingUtil.setScreenCaptureDetecting(getApplicationContext(), false);
+    public void onDetectStopped() {
+        sendRequestShakeDetect(false);
         setAllModeEnabled(true);
     }
     
@@ -370,13 +346,16 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         }, Context.BIND_AUTO_CREATE);
     }
     
-    private void enableShakeDetect(boolean enable) {
+    private void sendRequestShakeDetect(boolean enable) {
         if (mBackendService == null)
             return;
         
-        SettingUtil.setShakeMode(getApplicationContext(), enable);
         try {
-            mBackendService.sendRequest(RootService.RequestType.ShakeDetect.ordinal(), null, null);
+            if (enable) {
+                mBackendService.sendRequest(RootService.RequestType.StartShakeDetect.ordinal(), null, null);
+            } else {
+                mBackendService.sendRequest(RootService.RequestType.StopShakeDetect.ordinal(), null, null);
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
