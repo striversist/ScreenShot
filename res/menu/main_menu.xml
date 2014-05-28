@@ -15,6 +15,12 @@
                 android:showAsAction="always|withText"
                 android:title="@string/settings_function"/>
             <item
+                android:id="@+id/action_recommend_list"
+                android:icon="@drawable/ic_action_collections_view_as_list"
+                android:orderInCategory="3"
+                android:showAsAction="always|withText"
+                android:title="@string/settings_recommend_list"/>
+            <item
                 android:id="@+id/action_feedback"
                 android:icon="@drawable/ic_action_social_chat"
                 android:orderInCategory="4"

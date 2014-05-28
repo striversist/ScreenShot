@@ -49,6 +49,7 @@
     <string name="home_page">首页</string>
     <string name="screencap">截图</string>
     <string name="recommend">推荐</string>
+    <string name="settings_recommend_list">推荐列表</string>
     <string name="quit_comfirm">亲，确定要退出吗？</string>
     <string name="start_failed">启动失败</string>
     <string name="prompt_shake_mode_opened">摇一摇模式开启</string>

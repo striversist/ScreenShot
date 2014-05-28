@@ -140,6 +140,9 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             case R.id.action_feedback:
                 AppConnect.getInstance(this).showFeedback(this);
                 break;
+            case R.id.action_recommend_list:
+                AppEngine.getInstance().getAdManager().showOffers(this);
+                break;
             case R.id.action_about:
                 showAbout();
                 break;
