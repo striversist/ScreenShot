@@ -13,8 +13,8 @@
     <string name="settings_delete">删除</string>
     <string name="settings_select_all">全选</string>
     <string name="mode_shake">摇一摇截屏</string>
-    <string name="title_activity_setting">SettingActivity</string>
-    <string name="title_activity_imagegrid">SettingActivity</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="title_activity_imagegrid">图片墙</string>
     <string name="click_me_start">点击我启动</string>
     <string name="click_me_stop">点击我停止</string>
     <string name="start">启动</string>
@@ -54,7 +54,7 @@
     <string name="prompt_shake_mode_opened">摇一摇模式开启</string>
     <string name="prompt_shake_mode_closed">摇一摇模式关闭</string>
     <string name="prompt_at_least_choose_one_mode">请至少选择一种截图模式</string>
-    <string name="title_activity_image_pager">ImagePagerActivity</string>
+    <string name="title_activity_image_pager">图片浏览</string>
     <string name="shake_sensitivity_max_value">100</string>
     <string name="shake_sensitivity_min_value">1</string>
 
