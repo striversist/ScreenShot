@@ -198,7 +198,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     private void startNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.enter_main_page))
                 .setOngoing(true);
@@ -368,7 +368,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
     
     private void showAbout() {
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setIcon(R.drawable.ic_launcher)
+                .setIcon(R.drawable.app_icon)
                 .setTitle(getResources().getString(R.string.app_name))
                 .setMessage("作者：大眼牛工作室\n邮箱：bigeyecow@qq.com\n版权：©2014-2015")
                 .setPositiveButton(
