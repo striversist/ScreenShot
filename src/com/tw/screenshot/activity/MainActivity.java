@@ -171,8 +171,8 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
             startNotification();
             finish();
         } else {
-            new AlertDialog.Builder(this).setTitle("提示").setMessage(getString(R.string.quit_comfirm))
-                .setPositiveButton("是的", new OnClickListener() {
+            new AlertDialog.Builder(this).setTitle(R.string.dialog_title_prompt).setMessage(getString(R.string.quit_comfirm))
+                .setPositiveButton(R.string.dialog_positive_btn_text, new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -186,7 +186,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                         finish();
                     }
                 })
-                .setNegativeButton("取消", new OnClickListener() {
+                .setNegativeButton(R.string.dialog_negative_btn_text, new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
