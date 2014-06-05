@@ -21,7 +21,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import cn.waps.AppConnect;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -37,6 +36,7 @@ import com.tw.screenshot.service.CommandUtil;
 import com.tw.screenshot.service.IRootRequest;
 import com.tw.screenshot.service.RootService;
 import com.tw.screenshot.utils.SettingUtil;
+import com.tw.screenshot.wptools.AppConnect;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 

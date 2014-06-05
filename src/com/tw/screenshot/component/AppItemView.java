@@ -17,9 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import cn.waps.AdInfo;
-import cn.waps.AppConnect;
-import cn.waps.SDKUtils;
+
+import com.tw.screenshot.wptools.AdInfo;
+import com.tw.screenshot.wptools.AppConnect;
+import com.tw.screenshot.wptools.SDKUtils;
 
 public class AppItemView {
 

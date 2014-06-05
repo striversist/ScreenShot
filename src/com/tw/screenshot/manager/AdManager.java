@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
-import cn.waps.AppConnect;
-import cn.waps.AppListener;
-import cn.waps.UpdatePointsNotifier;
 
 import com.tw.screenshot.component.Shutter;
+import com.tw.screenshot.wptools.AppConnect;
+import com.tw.screenshot.wptools.AppListener;
+import com.tw.screenshot.wptools.UpdatePointsNotifier;
 
 public class AdManager implements Shutter {
     public static final String TAG = "AdManager";

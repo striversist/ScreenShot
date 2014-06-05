@@ -19,13 +19,13 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-import cn.waps.AdInfo;
-import cn.waps.AppConnect;
-import cn.waps.SDKUtils;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.tw.screenshot.R;
 import com.tw.screenshot.component.AppItemView;
+import com.tw.screenshot.wptools.AdInfo;
+import com.tw.screenshot.wptools.AppConnect;
+import com.tw.screenshot.wptools.SDKUtils;
 
 public class AdFragment extends SherlockFragment {
 

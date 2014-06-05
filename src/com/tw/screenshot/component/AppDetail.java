@@ -3,6 +3,10 @@ package com.tw.screenshot.component;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.tw.screenshot.wptools.AdInfo;
+import com.tw.screenshot.wptools.AppConnect;
+import com.tw.screenshot.wptools.SDKUtils;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -19,9 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import cn.waps.AdInfo;
-import cn.waps.AppConnect;
-import cn.waps.SDKUtils;
 
 public class AppDetail {
 
