@@ -2,7 +2,6 @@ package com.tw.screenshot.fragment;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -11,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +19,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -142,11 +143,16 @@ public class AdFragment extends SherlockFragment {
                     }
                     if(!new SDKUtils(context).isConnect()){
                         mHandler.post(new Runnable(){
-                            
                             @Override
                             public void run() {
                                 Toast.makeText(context, "数据获取失败,请检查网络重新加载", Toast.LENGTH_LONG).show();
-                                ((Activity)context).finish();
+                                TextView textView = new TextView(getActivity());
+                                textView.setText("数据获取失败,请检查网络重新加载");
+                                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                layoutParams.gravity = Gravity.CENTER;
+                                mLayout.removeAllViews();
+                                mLayout.addView(textView, layoutParams);
                             }
                         }); 
                         
@@ -156,17 +162,14 @@ public class AdFragment extends SherlockFragment {
                     list = AppConnect.getInstance(context).getAdInfoList();
                     Log.d(TAG, "getAdInfoList finish list=" + list);
                     if(list != null && !list.isEmpty()){
-                        
                         mHandler.post(new Runnable(){
-                            
                             @Override
                             public void run() {
                                 listView.setAdapter(new MyAdapter(context, list));
                                 mLayout.removeAllViews();
                                 mLayout.addView(listView);
                             }
-                        }); 
-                        
+                        });
                         break;
                     } 
                     
