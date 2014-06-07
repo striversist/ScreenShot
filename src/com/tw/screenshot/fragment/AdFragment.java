@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.tw.screenshot.wptools.SDKUtils;
 
 public class AdFragment extends SherlockFragment {
 
+    private static final String TAG = "AdFragment";
     private Handler mHandler;
     private LinearLayout mLayout;
     
@@ -150,7 +152,9 @@ public class AdFragment extends SherlockFragment {
                         
                         break;
                     }
+                    Log.d(TAG, "getAdInfoList start context=" + context);
                     list = AppConnect.getInstance(context).getAdInfoList();
+                    Log.d(TAG, "getAdInfoList finish list=" + list);
                     if(list != null && !list.isEmpty()){
                         
                         mHandler.post(new Runnable(){
@@ -164,7 +168,7 @@ public class AdFragment extends SherlockFragment {
                         }); 
                         
                         break;
-                    }
+                    } 
                     
                     i++ ;
                     try {
