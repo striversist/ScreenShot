@@ -26,6 +26,7 @@
     
     </LinearLayout>
 
+    <!-- 
     <FrameLayout
         android:layout_width="190.0dip"
         android:layout_height="65.0dip"
@@ -56,5 +57,6 @@
             android:text="@string/click_me_start"
             android:textColor="@color/white" />
     </FrameLayout>
+     -->
 
 </RelativeLayout>

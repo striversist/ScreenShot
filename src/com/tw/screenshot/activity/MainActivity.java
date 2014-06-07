@@ -21,6 +21,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -30,7 +31,7 @@ import com.tw.screenshot.adapter.MainFragmentAdapter;
 import com.tw.screenshot.fragment.AdFragment;
 import com.tw.screenshot.fragment.HistoryFragment;
 import com.tw.screenshot.fragment.HomeFragment;
-import com.tw.screenshot.fragment.HomeFragment.OnDetectChangedListener;
+import com.tw.screenshot.fragment.HomeFragment.OnCheckedChangeListener;
 import com.tw.screenshot.manager.AppEngine;
 import com.tw.screenshot.service.CommandUtil;
 import com.tw.screenshot.service.IRootRequest;
@@ -40,7 +41,7 @@ import com.tw.screenshot.wptools.AppConnect;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
 
-public class MainActivity extends SherlockFragmentActivity implements Callback, OnDetectChangedListener {
+public class MainActivity extends SherlockFragmentActivity implements Callback, OnCheckedChangeListener {
     private static final String TAG = "MainActivity";
     private static final int NOTIFICATION_ID = 1;
     private static final String KEY_FROM_NOTIFICATION = "key_from_notification";
@@ -68,7 +69,7 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
         mPagerAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         
         mHomeFragment = new HomeFragment();
-        mHomeFragment.setOnStartListener(this);
+        mHomeFragment.setOnCheckedChangeListener(this);
         
         mHistoryFragment = new HistoryFragment();
         mAdFragment = new AdFragment();
@@ -317,23 +318,14 @@ public class MainActivity extends SherlockFragmentActivity implements Callback, 
                 
         return true;
     }
-
-    @Override
-    public void onDetectStarted() {
-        sendRequestShakeDetect(SettingUtil.isShakeModeChecked(getApplicationContext()));
-        setAllModeEnabled(false);
-        finish(false);
-    }
     
     @Override
-    public void onDetectStopped() {
-        // 停止所有截屏监控
-        sendRequestShakeDetect(false);
-        setAllModeEnabled(true);
-    }
-    
-    private void setAllModeEnabled(boolean enable) {
-        mHomeFragment.setShakeModeEnabled(enable);
+    public void onCheckedChanged(View view, boolean isChecked) {
+        switch (view.getId()) {
+            case R.id.switch_widget:
+                sendRequestShakeDetect(isChecked);
+                break;
+        }
     }
     
     private void startRootService() {

@@ -23,7 +23,6 @@ public class SettingUtil {
     private static final String keyShakeSensitivity = "key_shake_sensitivity";
     private static final String keyScreenShotVibrary = "key_screenshot_vibrate";
     private static final String keyDelayTime = "key_delay_time";
-    private static final String keyScreenCaptureDetecting = "key_backend_running";
 
     private interface IPreference {
         Boolean getBoolean(Context context, String key, boolean defValue);
@@ -262,12 +261,8 @@ public class SettingUtil {
         return getIntegerPreferences(context, keyDelayTime, defValue);
     }
     
-    public static void setScreenCaptureDetecting(Context context, boolean isDetecting) {
-        setBooleanPreferences(context, keyScreenCaptureDetecting, isDetecting);
-    }
-    
     public static boolean isScreenCaptureDetecting(Context context) {
-        return getBooleanPreferences(context, keyScreenCaptureDetecting, false);
+        return isShakeModeChecked(context);
     }
 
     public static void setTestString(Context context, String key, String text) {
