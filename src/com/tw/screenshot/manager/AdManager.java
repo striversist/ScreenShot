@@ -42,9 +42,9 @@ public class AdManager implements Shutter {
         // 初始化应用的发布ID和密钥，以及设置测试模式
         AppConnect.getInstance("20710d37312e6f60a52f655aae5d1cf0", "default",
                 activity);
-        AppConnect.getInstance(mContext).setCrashReport(true);
-        AppConnect.getInstance(mContext).initAdInfo();
-        AppConnect.getInstance(mContext).checkUpdate(activity);
+        AppConnect.getInstance(activity).setCrashReport(true);
+        AppConnect.getInstance(activity).initAdInfo();
+//        AppConnect.getInstance(activity).checkUpdate(activity);
     }
 
     /**
