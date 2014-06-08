@@ -44,7 +44,7 @@ public class AdManager implements Shutter {
                 activity);
         AppConnect.getInstance(mContext).setCrashReport(true);
         AppConnect.getInstance(mContext).initAdInfo();
-        AppConnect.getInstance(mContext).checkUpdate(mContext);
+        AppConnect.getInstance(mContext).checkUpdate(activity);
     }
 
     /**
